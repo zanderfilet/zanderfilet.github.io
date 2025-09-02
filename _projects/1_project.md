@@ -1,37 +1,37 @@
 ---
 layout: page
-title: project 1
-description: with background image
-img: assets/img/12.jpg
+title: CS180 - Project 0. Becoming Friends with Your Camera
+description: Cyprian Zander
 importance: 1
-category: work
-related_publications: true
+category: CS180
+related_publications: false
 ---
 
-Every project has a beautiful feature showcase page.
-It's easy to include images in a flexible 3-column grid format.
-Make your photos 1/3, 2/3, or full width.
-
-To give your project a background in the portfolio page, just add the img tag to the front matter like so:
-
-    ---
-    layout: page
-    title: project
-    description: a project with a background image
-    img: /assets/img/12.jpg
-    ---
+Part 1: Selfie: The Wrong Way vs. The Right Way
 
 <div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/3.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
+  <div class="col-sm-2 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p0/1.jpg" title="image1" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-2 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p0/2.jpg" title="image2" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-2 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p0/3.jpg" title="image3" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-2 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p0/4.jpg" title="image4" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-2 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p0/5.jpg" title="image5" class="img-fluid rounded z-depth-1" %}
+  </div>
 </div>
+
+When you hold the camera close to the subject's face, the lens has to use a wide field of view to display the entire face. Wide angles overemphasize perspective, with features closer to the lens (i.e., a nose) looking disproportionately large, while features farther back (ears, background) look smaller. Since selfies are typically captured from up close, perspective is exaggerated, so the subject looks unnatural. 
+
+At a greater distance and zooming in on the subject, you’re narrowing the field of view. The relative size difference between near and far points on the face and in the background shrinks, so the proportions come out more natural. In other words, you _approach_ an orthogonal projection of the field of view.
+
+
 <div class="caption">
     Caption photos easily. On the left, a road goes through a tunnel. Middle, leaves artistically fall in a hipster photoshoot. Right, in another hipster photoshoot, a lumberjack grasps a handful of pine needles.
 </div>
