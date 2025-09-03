@@ -60,7 +60,7 @@ When you hold the camera close to the subject's face, the lens has to use a wide
 </div>
 
 <div class="caption text-center mt-2">
-  Demonstration of perspective compression across two rows of images.
+  Demonstration of perspective compression.
 </div>
 
 <p>
