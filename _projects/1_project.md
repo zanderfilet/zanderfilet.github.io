@@ -32,7 +32,7 @@ related_publications: false
 </div>
 
 <p>
-When you hold the camera close to the subject's face, the lens has to use a wide field of view to display the entire face...
+When you hold the camera close to the subject's face, the lens has to use a wide field of view to display the entire face. Wide angles overemphasize perspective, with features closer to the lens (i.e., a nose) looking disproportionately large, while features farther back (ears, background) look smaller. Since selfies are typically captured from up close, perspective is exaggerated, so the subject looks unnatural. At a greater distance and zooming in on the subject, you’re narrowing the field of view. The relative size difference between near and far points on the face and in the background shrinks, so the proportions come out more natural. In other words, you _approach_ an orthogonal projection of the field of view.
 </p>
 
 ---
@@ -64,7 +64,7 @@ When you hold the camera close to the subject's face, the lens has to use a wide
 </div>
 
 <p>
-When you stand far away and zoom in down a street, the lens narrows its field of view...
+When you stand far away and zoom in down a street, the lens narrows its field of view. This compresses perspective: objects that are actually separated by large distances along the street appear stacked closely together, making the scene look flattened. Buildings, lampposts, and people at different depths seem almost the same size.
 </p>
 
 ---
@@ -72,8 +72,7 @@ When you stand far away and zoom in down a street, the lens narrows its field of
 ### Part 3: Bringing It All Together
 
 <p>
-When you move the camera backward while zooming in, you change the perspective but keep the subject about the same size. 
-The background appears to stretch and warp around the subject, creating the unsettling “dolly zoom” effect.
+When you move the camera backward while zooming in, you change the perspective but keep the subject about the same size. The background appears to stretch and warp around the subject, creating the dolly zoom effect.
 </p>
 
 <div class="text-center my-4">
