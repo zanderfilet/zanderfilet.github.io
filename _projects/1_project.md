@@ -5,6 +5,7 @@ description: Cyprian Zander
 importance: 1
 category: CS180
 related_publications: false
+img: assets/img/cs180/p0/cover.JPG
 ---
 
 ### Part 1: Selfie — The Wrong Way vs. The Right Way
