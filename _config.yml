@@ -7,14 +7,11 @@ first_name: Cyprian
 middle_name: 
 last_name: Zander
 contact_note: >
-  You can even add a little note about which of these is the best way to reach you.
-description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-  Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
-keywords: jekyll, jekyll-theme, academic-website, portfolio-website # add your own keywords or leave empty
+  na
+description: >
+  Computer Science student at UC Berkeley interested in machine learning, data science, and software engineering. Academic portfolio showcasing research, projects, and publications.
+footer_text: 
+keywords: machine-learning, computer-science, berkeley, uc-berkeley, portfolio, research, data-science, software-engineering, academic, publications, artificial-intelligence, deep-learning, neural-networks, python, programming, algorithms, statistics, mathematics, cs-student, undergraduate, research-assistant, github, open-source, technical-writing, academic-website, personal-website, student-portfolio, cs180, cs61a, cs61b, cs70, cs188, cs189, launchpad, berkeley-launchpad, startup, entrepreneurship, technology, innovation, stem, education, university, california, bay-area, silicon-valley
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: favico.ico # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
