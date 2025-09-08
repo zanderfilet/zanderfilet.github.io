@@ -25,6 +25,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I’m a Computer Science student at UC Berkeley with experience as a quantitative trading intern at Citadel Securities and a software engineering intern at MVTec. I’m broadly interested in systematic trading, algorithmic game theory, and applied machine learning.
+I'm a senior studying Computer Science at UC Berkeley with a concentration in statistics. I’ve interned in quantitative trading at Citadel Securities (Options Market Making and Index Options desks) and in computer vision research at MVTec (OCR acceleration and anomaly detection). My interests broadly span systematic trading, algorithmic game theory, and applied ML. 
 
-In my free time, I enjoy card games, photography, hiking in nearby national parks, skiing, and tennis.
+In my free time, I enjoy card games, photography, hiking, skiing, and tennis.
+
+This site is a work in progress, so expect the occasional rough edge. If you want to chat or have a puzzle/game to share, please email me!
