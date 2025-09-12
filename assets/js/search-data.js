@@ -416,14 +416,14 @@ ninja.data = [{
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "News",},{id: "projects-cs180-project-1-colorizing-prokudin-gorskii",
-          title: 'CS180 - Project 1. Colorizing Prokudin-Gorskii',
+          section: "News",},{id: "projects-cs180-project-0-becoming-friends-with-your-camera",
+          title: 'CS180 - Project 0. Becoming Friends with Your Camera',
           description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
-          description: "a project with a background image and giscus comments",
+            },},{id: "projects-cs180-project-1-colorizing-prokudin-gorskii",
+          title: 'CS180 - Project 1. Colorizing Prokudin-Gorskii',
+          description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
             },},{id: "projects-project-3-with-very-long-name",
