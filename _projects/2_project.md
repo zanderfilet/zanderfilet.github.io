@@ -141,7 +141,7 @@ Below are the filter displacements found by both approaches.
 
 ---
 
-### Part 3: Pyramid Search
+### Part 3: Coarse-to-Fine Pyramid Search
 
 Our next challenge is that searching for the correct alignment on large images by checking every possible shift is too slow. To speed this up, I use an image pyramid. This approach starts by finding a rough alignment on a small, downscaled version of the image, which is very fast. This rough alignment is then used to guide a more focused search on a larger, higher-resolution version. By repeating this process from coarse to fine, I can quickly and accurately align the full-resolution image, even when the initial misalignment is large.
 
@@ -336,7 +336,7 @@ Below are the filter displacements found by both approaches.
 | three_generations | (-53, -14) | (0, 0) | (59, -3) | (-53, -14) | (0, 0) | (59, -3) |
 | lugano | (-41, 16) | (0, 0) | (53, -13) | (-41, 16) | (0, 0) | (52, -13) |
 | melons | (-82, -11) | (0, 0) | (96, 3) | (-82, -11) | (0, 0) | (96, 3) |
-| lastochikino | (270, 270) | (0, 0) | (78, -7) | (3, 2) | (0, 0) | (78, -7) |
+| lastochikino | (3, 2) | (0, 0) | (78, -7) | (3, 2) | (0, 0) | (78, -7) |
 | icon | (-41, -17) | (0, 0) | (48, 5) | (-41, -17) | (0, 0) | (48, 5) |
 | siren | (-50, 6) | (0, 0) | (47, -19) | (-49, 6) | (0, 0) | (47, -19) |
 | self_portrait | (-79, -29) | (0, 0) | (98, 8) | (-79, -29) | (0, 0) | (98, 8) |
@@ -381,24 +381,48 @@ To eliminate the discolored border artifacts created by the channel alignment pr
   Lugano (NCC-lvl4+Hist_Eq+Cropped)
 </div>
 
-
 ---
 
 ### Additional Images From LoC Collection
 
-<div class="row">
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/loc_1_color.jpg" title="LoC sample 1 (colorized)" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/loc_2_color.jpg" title="LoC sample 2 (colorized)" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/loc_3_color.jpg" title="LoC sample 3 (colorized)" class="img-fluid rounded z-depth-1" %}
-  </div>
+Below are some additional photos I selected from the collection.
+
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/group_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
 </div>
 
 <div class="caption text-center mt-2">
-  [PLACEHOLDER: One-line caption about non-handout examples.]
+  Lugano 2, 1905-1015
 </div>
 
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/khan_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
+</div>
+
+<div class="caption text-center mt-2">
+  Khan of the Russian protectorate of Khorezm (Khiva), 1910-1915
+</div>
+
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/group_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
+</div>
+
+<div class="caption text-center mt-2">
+  Sergeĭ Mikhaĭlovich Prokudin-Gorskiĭ and two men in Cossak dress seated on the ground, 1915
+</div>
+
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/molodoi_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
+</div>
+
+<div class="caption text-center mt-2">
+  Young Bashkir, 1910
+</div>
+
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/sheksna_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
+</div>
+
+<div class="caption text-center mt-2">
+  Crew of the steamship "Sheksna" of the M.P.S. [Ministry of Communication and Transportation], 1909
+</div>
