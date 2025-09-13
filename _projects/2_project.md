@@ -10,7 +10,7 @@ img: assets/img/cs180/p1/cover.jpg
 
 ### Overview
 
-This goal of this project is to automatically reconstruct color photographs from the filtered glass plate negatives of Sergei Mikhailovich Prokudin-Gorskii, an early 20th century photographer. Each negative contains three separate exposures of images taken through blue, green, and red filters (from top to bottom). Since I need to stitch these components together, the primary challenges of this project consists of identifying how each exposure is displaced to correctly align each color filter. Later, I extend on this algorithm with some optimizations, color correction, and cropping in postprocessing. 
+The goal of this project is to automatically reconstruct color photographs from the filtered glass plate negatives of Sergei Mikhailovich Prokudin-Gorskii, an early 20th century photographer. Each negative contains three separate exposures of images taken through blue, green, and red filters (from top to bottom). Since I need to stitch these components together, the primary challenge of this project is calculating how each exposure is displaced to correctly align each color filter. Later, I extend on this algorithm with some optimizations, color correction, and cropping in postprocessing. 
 
 ---
 
@@ -49,9 +49,9 @@ Blue, green, red, respectively
 
 ### Part 1: Alignment Metrics
 
-Our first approach focussed on minimizing the L2 Norm between a reference filter (green) to the other two filters. This metric simply evaluates the aggregate Euclidean distance between the reference and the target filter, which generally works well, but is highly sensitive to brightness differences between channels (i.e., matching based on the Emir's robe above is not great for L2).
+My first approach focusses on minimizing the L2 Norm between a reference filter (green) to the other two filters. This metric simply evaluates the aggregate Euclidean distance between the reference and the target filter, which generally works well, but is highly sensitive to brightness differences between channels (i.e., matching based on the Emir's robe above is not great for L2).
 
-Our second approach focussed on maximizing normalized cross-correlation (NCC), which is more robust, since it is invariant to linear changes in brightness and contrast. This method was generally more effective, since different color filters produce varying intensities.
+My second approach focusses on maximizing normalized cross-correlation (NCC), which is more robust, since it is invariant to linear changes in brightness and contrast. This method was generally more effective, since different color filters produce varying intensities.
 
 ##### L2 Norm
 
@@ -143,11 +143,11 @@ Below are the filter displacements found by both approaches.
 
 ### Part 3: Coarse-to-Fine Pyramid Search
 
-Our next challenge is that searching for the correct alignment on large images by checking every possible shift is too slow. To speed this up, I use an image pyramid. This approach starts by finding a rough alignment on a small, downscaled version of the image, which is very fast. This rough alignment is then used to guide a more focused search on a larger, higher-resolution version. By repeating this process from coarse to fine, I can quickly and accurately align the full-resolution image, even when the initial misalignment is large.
+The next challenge is that searching for the correct alignment on large images by checking every possible shift is too slow. To speed this up, I use an image pyramid. This approach starts by finding a rough alignment on a small, downscaled version of the image, which is very fast. This rough alignment is then used to guide a more focused search on a larger, higher-resolution version. By repeating this process from coarse to fine, I can quickly and accurately align the full-resolution image, even when the initial misalignment is large.
 
-The process begins by applying a Gaussian blur with \(\sigma = 1\) to the image. This is an anti-aliasing filter to reduce artifacts when the image is downscaled. I used a rescaling factor of 0.5, meaning each level of the pyramid is half the width and height of the one above it, and all larger images in the dataset were constructed with 4 levels. The alignment starts at the smallest scale, performing a search within a +/- 15 pixel displacement range in both x and y to find a coarse alignment. This calculated displacement is then doubled and propagated to the next higher-resolution level, where it is used to shift the image. A search with a smaller displacement range of +/- 2 pixels then refines the alignment. This process of scaling the displacement and performing a fine-tuned local search is repeated until the original, full-resolution image is reached.
+The process begins by applying a Gaussian blur with $\sigma = 1$ to the image. This is an anti-aliasing filter to reduce artifacts when the image is downscaled. I use a rescaling factor of 0.5, meaning each level of the pyramid is half the width and height of the one above it, and all larger images in the dataset are constructed with 4 levels. The alignment starts at the smallest scale, performing a search within a +/- 15 pixel displacement range in both x and y to find a coarse alignment. This calculated displacement is then doubled and propagated to the next higher-resolution level, where it is used to shift the image. A search with a smaller displacement range of +/- 2 pixels then refines the alignment. This process of scaling the displacement and performing a fine-tuned local search is repeated until the original, full-resolution image is reached.
 
-##### Pyramid search time optimization
+##### Pyramid Search Time Optimization
 
 <div class="my-4">
   {% include figure.liquid path="assets/img/cs180/p1/optimization_graph.png" title="Time improvement graph" class="img-fluid rounded z-depth-1" %}
@@ -353,6 +353,7 @@ Histogram equalization works by transforming the pixel intensities based on thei
 
 ##### Automatic Cropping
 To eliminate the discolored border artifacts created by the channel alignment process, I apply an automatic cropping procedure to the final colorized image. This method simply removes a 5% margin from all edges of the image, resulting in a cleaner final output.
+
 ---
 
 ### Select Images with Automatic Contrast and Cropping
@@ -388,7 +389,7 @@ To eliminate the discolored border artifacts created by the channel alignment pr
 Below are some additional photos I selected from the collection.
 
 <div class="my-4">
-  {% include figure.liquid path="assets/img/cs180/p1/group_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
+  {% include figure.liquid path="assets/img/cs180/p1/lugano2_pyramid_NCC_level4_eq_cropped.jpg" title="Group Final" class="img-fluid rounded z-depth-1" %}
 </div>
 
 <div class="caption text-center mt-2">
