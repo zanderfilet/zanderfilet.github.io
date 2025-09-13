@@ -344,64 +344,42 @@ Below are the filter displacements found by both approaches.
 
 ---
 
-### Part 4: Image Pyramid (Coarse-to-Fine)
+### Bells & Whistles
 
-- [PLACEHOLDER: Pyramid construction (downsample ×2).]
-- [PLACEHOLDER: Recursive refine from coarsest to finest.]
-- [PLACEHOLDER: Window size per level, termination criteria.]
-- [PLACEHOLDER: Runtime/computation notes.]
+##### Automatic Contrast
+From these results, I wanted to extend on the project, by improving the contrast in an image by spreading out the most frequent intensity values. I achieved this by equalizing the histograms of all three color filters, making the distribution of pixel intensities more uniform.
 
-<div class="row">
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/pyr_lvl3.jpg" title="Level 3 (coarsest)" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/pyr_lvl2.jpg" title="Level 2" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/pyr_lvl1.jpg" title="Level 1 (finest)" class="img-fluid rounded z-depth-1" %}
-  </div>
+Histogram equalization works by transforming the pixel intensities based on their own distribution. First, a histogram of the image's pixel intensities is computed, which is used to calculate the CDF (the cumulative sum of pixel counts up to each intensity level). The CDF is normalized, creating a transfer function that maps the original intensity values to a new range. Each pixel's intensity in the original image is then replaced by its corresponding value from the normalized CDF. This remapping effectively spreads out the most frequent intensity values, stretching the distribution across the full dynamic range.
+
+##### Automatic Cropping
+To eliminate the discolored border artifacts created by the channel alignment process, I apply an automatic cropping procedure to the final colorized image. This method simply removes a 5% margin from all edges of the image, resulting in a cleaner final output.
+---
+
+### Select Images with Automatic Contrast and Cropping
+
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/emir_pyramid_NCC_level4_eq_cropped.jpg" title="Emir Final" class="img-fluid rounded z-depth-1" %}
 </div>
 
 <div class="caption text-center mt-2">
-  [PLACEHOLDER: Pyramid levels used for alignment.]
+  Emir of Bukhara (NCC-lvl4+Hist_Eq+Cropped)
 </div>
 
----
-
-### Results on Provided Images
-
-[PLACEHOLDER: Brief sentence about showing all images and offsets.]
-
-<div class="row">
-  <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/monastery_color.jpg" title="monastery (colorized)" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/monastery_split.jpg" title="aligned channels overlay (monastery)" class="img-fluid rounded z-depth-1" %}
-  </div>
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/italil_pyramid_NCC_level4_eq_cropped.jpg" title="Italil Final" class="img-fluid rounded z-depth-1" %}
 </div>
 
-<div class="row">
-  <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/cathedral_color.jpg" title="cathedral (colorized)" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/cathedral_split.jpg" title="aligned channels overlay (cathedral)" class="img-fluid rounded z-depth-1" %}
-  </div>
+<div class="caption text-center mt-2">
+  Italil (NCC-lvl4+Hist_Eq+Cropped)
 </div>
 
-[REPEAT BLOCKS AS NEEDED FOR: tobolsk, emir, train, harvesters, lady, icon, self_portrait, three_generations, etc.]
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/lugano_pyramid_NCC_level4_eq_cropped.jpg" title="Lugano Final" class="img-fluid rounded z-depth-1" %}
+</div>
 
----
-
-### Bells & Whistles
-
-##### Automatic Cropping
-[PLACEHOLDER: Method summary + before/after thumbnails.]
-
-##### Automatic Contrast
-[PLACEHOLDER: Method summary + before/after thumbnails.]
+<div class="caption text-center mt-2">
+  Lugano (NCC-lvl4+Hist_Eq+Cropped)
+</div>
 
 
 ---
