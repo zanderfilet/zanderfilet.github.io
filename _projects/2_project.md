@@ -25,10 +25,10 @@ This goal of this project is to automatically reconstruct color photographs from
 </div>
 
 <div class="caption text-center mt-2">
-Sample original glass plate (blue, green, red from top to bottom)
+Emir of Bukhara (1911), sample original glass plate (blue, green, red from top to bottom)
 </div>
 
-Before running our alignment algorithms, we simply divide the raw digitzed negative into thirds, since this approximately correctly divides each color filter a respective 2D filter.
+Before running our alignment algorithms, we simply divide the raw digitzed negative into thirds, since this approximately correctly divides each color filter into their respective color filter category.
 
 <div class="row">
   <div class="col-sm-4 mt-3 mt-md-0">
@@ -41,6 +41,9 @@ Before running our alignment algorithms, we simply divide the raw digitzed negat
     {% include figure.liquid path="assets/img/cs180/p1/emir_03_red_channel.jpg" title="Red channel" class="img-fluid rounded z-depth-1" %}
   </div>
 </div>
+<div class="caption text-center mt-3">
+Blue, green, red, respectively
+</div>
 
 ---
 
@@ -48,7 +51,7 @@ Before running our alignment algorithms, we simply divide the raw digitzed negat
 
 Our first approach focussed on minimizing the L2 Norm between a reference filter (green) to the other two filters. This metric simply evaluates the aggregate Euclidean distance between the reference and the target filter, which generally works well, but is highly sensitive to brightness differences between channels (i.e., matching based on the Emir's robe above is not great for L2).
 
-Our second approach focussed on maximizing normalized cross-correlation (NCC), which is more robust, since it is invariant to linear changes in brightness and contrast. This method was generally more effective, since different different color filters naturally produce varying intensities.
+Our second approach focussed on maximizing normalized cross-correlation (NCC), which is more robust, since it is invariant to linear changes in brightness and contrast. This method was generally more effective, since different color filters produce varying intensities.
 
 ##### L2 Norm
 
@@ -57,7 +60,7 @@ E(\Delta x, \Delta y) =
 \sum_{x,y} \Big( R(x,y) - F(x+\Delta x, y+\Delta y) \Big)^2
 $$
 
-We minimize \(E(\Delta x, \Delta y)\) to find the displacement \((\Delta x, \Delta y)\) where the shifted filter \(F\) best overlaps with the reference \(R\).
+We minimize $E(\Delta x, \Delta y)$ to find the displacement $(\Delta x, \Delta y)$ where the shifted filter $F$ best overlaps with the reference $R$.
 
 ##### Normalized Cross-Correlation (NCC)
 
@@ -68,18 +71,18 @@ $$
       \sqrt{\sum_{x,y} \big(F(x+\Delta x, y+\Delta y) - \bar{F}\big)^2}}
 $$
 
-We maximize \(\text{NCC}(\Delta x, \Delta y)\) to find the displacement that yields the strongest correlation between \(R\) and \(F\), regardless of brightness or contrast differences.
+We maximize $\text{NCC}(\Delta x, \Delta y)$ to find the displacement that yields the strongest correlation between $R$ and $F$, regardless of brightness or contrast differences.
 
 ##### Variables
 
-- **\(R(x,y)\):** Reference filter/channel (kept fixed, e.g. green).  
-- **\(F(x+\Delta x, y+\Delta y)\):** Filter/channel being aligned (shifted version of red or blue).  
-- **\((\Delta x, \Delta y)\):** Displacement vector we are solving for.  
-- **\(\bar{R}, \bar{F}\):** Mean pixel intensities of \(R\) and \(F\), used for normalization in NCC.  
+- **$R(x,y)$:** Reference filter/channel (kept fixed, e.g. green).  
+- **$F(x+\Delta x, y+\Delta y)$:** Filter/channel being aligned (shifted version of red or blue).  
+- **$(\Delta x, \Delta y)$:** Displacement vector we are solving for.  
+- **$\bar{R}, \bar{F}$:** Mean pixel intensities of $R$ and $F$, used for normalization in NCC.  
 
 ---
 
-### First Examples
+### Small Image Examples
 
 Here are some first outputs I achieved with these two approaches.
 
@@ -87,7 +90,7 @@ Here are some first outputs I achieved with these two approaches.
   <div class="col-sm-6 mt-3 mt-md-0">
     {% include figure.liquid path="assets/img/cs180/p1/monastery_pyramid_L2_level4.jpg" title="Monastery Pyramid, L2 Norm" class="img-fluid rounded z-depth-1" %}
     <div class="caption text-center mt-2">
-      L2 Norm alignment result
+      Monastery, L2 Norm
     </div>
   </div>
   <div class="col-sm-6 mt-3 mt-md-0">
@@ -102,7 +105,7 @@ Here are some first outputs I achieved with these two approaches.
   <div class="col-sm-6 mt-3 mt-md-0">
     {% include figure.liquid path="assets/img/cs180/p1/tobolsk_pyramid_L2_level4.jpg" title="L2 Norm" class="img-fluid rounded z-depth-1" %}
     <div class="caption text-center mt-2">
-      Tobolsk Pyramid, L2 Norm
+      Tobolsk, L2 Norm
     </div>
   </div>
   <div class="col-sm-6 mt-3 mt-md-0">
@@ -117,7 +120,7 @@ Here are some first outputs I achieved with these two approaches.
   <div class="col-sm-6 mt-3 mt-md-0">
     {% include figure.liquid path="assets/img/cs180/p1/cathedral_pyramid_L2_level4.jpg" title="L2 Norm" class="img-fluid rounded z-depth-1" %}
     <div class="caption text-center mt-2">
-      Cathedral pyramid, L2 Norm
+      Cathedral, L2 Norm
     </div>
   </div>
   <div class="col-sm-6 mt-3 mt-md-0">
@@ -128,19 +131,55 @@ Here are some first outputs I achieved with these two approaches.
   </div>
 </div>
 
+Below are the filter displacements found by both approaches.
+
+| Image Name | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
+|------------|---------------------|----------------------|-------------------|---------------------|----------------------|-------------------|
+| monastery | (3, -2) | (0, 0) | (6, 1) | (3, -2) | (0, 0) | (6, 1) |
+| tobolsk | (-3, -3) | (0, 0) | (4, 1) | (-3, -3) | (0, 0) | (4, 1) |
+| cathedral | (-5, -2) | (0, 0) | (7, 1) | (-5, -2) | (0, 0) | (7, 1) |
+
 ---
 
-### Part 3: Exhaustive Search (Single Scale)
+### Part 3: Pyramid Search
 
-[PLACEHOLDER: Search window, step size, tie-breaking, boundary handling, interior mask.]
+Our next challenge is that searching for the correct alignment on large images by checking every possible shift is too slow. To speed this up, I use an image pyramid. This approach starts by finding a rough alignment on a small, downscaled version of the image, which is very fast. This rough alignment is then used to guide a more focused search on a larger, higher-resolution version. By repeating this process from coarse to fine, I can quickly and accurately align the full-resolution image, even when the initial misalignment is large.
+
+The process begins by applying a Gaussian blur with \(\sigma = 1\) to the image. This is an anti-aliasing filter to reduce artifacts when the image is downscaled. I used a rescaling factor of 0.5, meaning each level of the pyramid is half the width and height of the one above it, and all larger images in the dataset were constructed with 4 levels. The alignment starts at the smallest scale, performing a search within a +/- 15 pixel displacement range in both x and y to find a coarse alignment. This calculated displacement is then doubled and propagated to the next higher-resolution level, where it is used to shift the image. A search with a smaller displacement range of +/- 2 pixels then refines the alignment. This process of scaling the displacement and performing a fine-tuned local search is repeated until the original, full-resolution image is reached.
+
+# Pyramid search time optimization
 
 <div class="text-center my-4">
   {% include figure.liquid path="assets/img/cs180/p1/singlescale_demo.gif" title="Single-scale alignment demo (placeholder)" class="img-fluid rounded z-depth-1 mx-auto d-block" style="max-width: 60%;" %}
 </div>
 
-<div class="caption text-center mt-2">
-  [PLACEHOLDER: One-line caption describing the search visualization.]
+---
+
+### Full Gallery
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/_pyramid_L2_level4.jpg" title=", L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      , L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/_pyramid_NCC_level4.jpg" title="NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
 </div>
+
+
+Below are the filter displacements found by both approaches.
+
+| Image Name | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
+|------------|---------------------|----------------------|-------------------|---------------------|----------------------|-------------------|
+| monastery | (3, -2) | (0, 0) | (6, 1) | (3, -2) | (0, 0) | (6, 1) |
+| tobolsk | (-3, -3) | (0, 0) | (4, 1) | (-3, -3) | (0, 0) | (4, 1) |
+| cathedral | (-5, -2) | (0, 0) | (7, 1) | (-5, -2) | (0, 0) | (7, 1) |
 
 ---
 
@@ -195,15 +234,13 @@ Here are some first outputs I achieved with these two approaches.
 
 ---
 
-### Alignment Offsets (G→B and R→B)
+### Bells & Whistles
 
-[PLACEHOLDER: Replace with your actual offsets.]
+##### Automatic Cropping
+[PLACEHOLDER: Method summary + before/after thumbnails.]
 
-| Image              | G Offset (x, y) | R Offset (x, y) | Metric | Pyramid Levels | Runtime (s) |
-|-------------------:|:---------------:|:---------------:|:------:|:--------------:|:-----------:|
-| monastery.jpg      | (__, __)        | (__, __)        | NCC    | 1              | __.__       |
-| cathedral.jpg      | (__, __)        | (__, __)        | NCC    | 1              | __.__       |
-| emir.tif           | (__, __)        | (__, __)        | EDGE   | 4              | __.__       |
+##### Automatic Contrast
+[PLACEHOLDER: Method summary + before/after thumbnails.]
 
 
 ---
@@ -226,27 +263,3 @@ Here are some first outputs I achieved with these two approaches.
   [PLACEHOLDER: One-line caption about non-handout examples.]
 </div>
 
----
-
-### Bells & Whistles
-
-#### Automatic Cropping
-[PLACEHOLDER: Method summary + before/after thumbnails.]
-
-#### Automatic Contrast
-[PLACEHOLDER: Method summary + before/after thumbnails.]
-
-#### Automatic White Balance
-[PLACEHOLDER: Method summary + before/after thumbnails.]
-
-#### Better Color Mapping
-[PLACEHOLDER: Brief idea + example.]
-
-#### Edge/Gradient Features
-[PLACEHOLDER: Metric swap details + result.]
-
-#### Small Rotations/Scale
-[PLACEHOLDER: Search extension + runtime note.]
-
-#### Other Sources (e.g., Astronomy)
-[PLACEHOLDER: Example + alignment/write-up note.]
