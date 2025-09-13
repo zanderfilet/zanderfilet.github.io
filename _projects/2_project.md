@@ -147,10 +147,14 @@ Our next challenge is that searching for the correct alignment on large images b
 
 The process begins by applying a Gaussian blur with \(\sigma = 1\) to the image. This is an anti-aliasing filter to reduce artifacts when the image is downscaled. I used a rescaling factor of 0.5, meaning each level of the pyramid is half the width and height of the one above it, and all larger images in the dataset were constructed with 4 levels. The alignment starts at the smallest scale, performing a search within a +/- 15 pixel displacement range in both x and y to find a coarse alignment. This calculated displacement is then doubled and propagated to the next higher-resolution level, where it is used to shift the image. A search with a smaller displacement range of +/- 2 pixels then refines the alignment. This process of scaling the displacement and performing a fine-tuned local search is repeated until the original, full-resolution image is reached.
 
-# Pyramid search time optimization
+##### Pyramid search time optimization
 
-<div class="text-center my-4">
-  {% include figure.liquid path="assets/img/cs180/p1/singlescale_demo.gif" title="Single-scale alignment demo (placeholder)" class="img-fluid rounded z-depth-1 mx-auto d-block" style="max-width: 60%;" %}
+<div class="my-4">
+  {% include figure.liquid path="assets/img/cs180/p1/optimization_graph.png" title="Time improvement graph" class="img-fluid rounded z-depth-1" %}
+</div>
+
+<div class="caption text-center mt-2">
+  Time complexity comparison showing the speed improvement of pyramid search across levels with abovementioned hyperparameters. Level 2 onwards converges to an accurate displacement result.
 </div>
 
 ---
@@ -159,27 +163,184 @@ The process begins by applying a Gaussian blur with \(\sigma = 1\) to the image.
 
 <div class="row">
   <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/_pyramid_L2_level4.jpg" title=", L2 Norm" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid path="assets/img/cs180/p1/church_pyramid_L2_level4.jpg" title="Church, L2 Norm" class="img-fluid rounded z-depth-1" %}
     <div class="caption text-center mt-2">
-      , L2 Norm
+      Church, L2 Norm
     </div>
   </div>
   <div class="col-sm-6 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/_pyramid_NCC_level4.jpg" title="NCC" class="img-fluid rounded z-depth-1" %}
+    {% include figure.liquid path="assets/img/cs180/p1/church_pyramid_NCC_level4.jpg" title="Church NCC" class="img-fluid rounded z-depth-1" %}
     <div class="caption text-center mt-2">
       NCC
     </div>
   </div>
 </div>
 
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/emir_pyramid_L2_level4.jpg" title="Emir, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Emir, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/emir_pyramid_NCC_level4.jpg" title="Emir NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/harvesters_pyramid_L2_level4.jpg" title="Harvesters, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Harvesters, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/harvesters_pyramid_NCC_level4.jpg" title="Harvesters NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/icon_pyramid_L2_level4.jpg" title="Icon, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Icon, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/icon_pyramid_NCC_level4.jpg" title="Icon NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/italil_pyramid_L2_level4.jpg" title="Italil, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Italil, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/italil_pyramid_NCC_level4.jpg" title="Italil NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/lastochikino_pyramid_L2_level4.jpg" title="Lastochikino, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Lastochikino, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/lastochikino_pyramid_NCC_level4.jpg" title="Lastochikino NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/lugano_pyramid_L2_level4.jpg" title="Lugano, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Lugano, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/lugano_pyramid_NCC_level4.jpg" title="Lugano NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/melons_pyramid_L2_level4.jpg" title="Melons, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Melons, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/melons_pyramid_NCC_level4.jpg" title="Melons NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/self_portrait_pyramid_L2_level4.jpg" title="Self Portrait, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Self Portrait, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/self_portrait_pyramid_NCC_level4.jpg" title="Self Portrait NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/siren_pyramid_L2_level4.jpg" title="Siren, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Siren, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/siren_pyramid_NCC_level4.jpg" title="Siren NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/three_generations_pyramid_L2_level4.jpg" title="Three Generations, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Three Generations, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/three_generations_pyramid_NCC_level4.jpg" title="Three Generations NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
 
 Below are the filter displacements found by both approaches.
 
 | Image Name | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
 |------------|---------------------|----------------------|-------------------|---------------------|----------------------|-------------------|
-| monastery | (3, -2) | (0, 0) | (6, 1) | (3, -2) | (0, 0) | (6, 1) |
-| tobolsk | (-3, -3) | (0, 0) | (4, 1) | (-3, -3) | (0, 0) | (4, 1) |
-| cathedral | (-5, -2) | (0, 0) | (7, 1) | (-5, -2) | (0, 0) | (7, 1) |
+| emir | (-49, -24) | (0, 0) | (57, 17) | (-49, -24) | (0, 0) | (57, 17) |
+| italil | (-38, -21) | (0, 0) | (39, 15) | (-38, -21) | (0, 0) | (39, 15) |
+| church | (-25, -4) | (0, 0) | (33, -8) | (-25, -4) | (0, 0) | (33, -8) |
+| three_generations | (-53, -14) | (0, 0) | (59, -3) | (-53, -14) | (0, 0) | (59, -3) |
+| lugano | (-41, 16) | (0, 0) | (53, -13) | (-41, 16) | (0, 0) | (52, -13) |
+| melons | (-82, -11) | (0, 0) | (96, 3) | (-82, -11) | (0, 0) | (96, 3) |
+| lastochikino | (270, 270) | (0, 0) | (78, -7) | (3, 2) | (0, 0) | (78, -7) |
+| icon | (-41, -17) | (0, 0) | (48, 5) | (-41, -17) | (0, 0) | (48, 5) |
+| siren | (-50, 6) | (0, 0) | (47, -19) | (-49, 6) | (0, 0) | (47, -19) |
+| self_portrait | (-79, -29) | (0, 0) | (98, 8) | (-79, -29) | (0, 0) | (98, 8) |
+| harvesters | (-59, -17) | (0, 0) | (65, -3) | (-59, -17) | (0, 0) | (65, -3) |
 
 ---
 
