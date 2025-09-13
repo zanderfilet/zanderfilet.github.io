@@ -8,50 +8,125 @@ related_publications: false
 img: assets/img/cs180/p1/cover.jpg
 ---
 
-### Background
-
-[PLACEHOLDER: Brief historical note on Prokudin-Gorskii and RGB glass plates — 2–3 sentences max.]
-
----
-
 ### Overview
 
-[PLACEHOLDER: One-paragraph summary of the assignment, goals, and constraints.]
-
+This goal of this project is to automatically reconstruct color photographs from the filtered glass plate negatives of Sergei Mikhailovich Prokudin-Gorskii, an early 20th century photographer. Each negative contains three separate exposures of images taken through blue, green, and red filters (from top to bottom). Since I need to stitch these components together, the primary challenges of this project consists of identifying how each exposure is displaced to correctly align each color filter. Later, I extend on this algorithm with some optimizations, color correction, and cropping in postprocessing. 
 
 ---
 
-### Part 1: Channel Extraction (B/G/R Slices)
+### Input and preprocessing
 
-<div class="row">
-  <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/extract_full.jpg" title="Original glass plate (BGR stacked)" class="img-fluid rounded z-depth-1 fixed-thumb" %}
-  </div>
-  <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/extract_b.jpg" title="B channel (top third)" class="img-fluid rounded z-depth-1 fixed-thumb" %}
-  </div>
-  <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/extract_g.jpg" title="G channel (middle third)" class="img-fluid rounded z-depth-1 fixed-thumb" %}
-  </div>
-  <div class="col-sm mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/cs180/p1/extract_r.jpg" title="R channel (bottom third)" class="img-fluid rounded z-depth-1 fixed-thumb" %}
+<div class="text-center my-4">
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      {% include figure.liquid path="assets/img/cs180/p1/emir_in.jpg" title="Sample original glass plate (blue, green, red from top to bottom)" class="img-fluid rounded z-depth-1" %}
+    </div>
   </div>
 </div>
 
 <div class="caption text-center mt-2">
-  [PLACEHOLDER: One-line caption about slicing the plate into equal thirds.]
+Sample original glass plate (blue, green, red from top to bottom)
 </div>
 
-[PLACEHOLDER: Notes on cropping borders/margins used for matching window.]
+Before running our alignment algorithms, we simply divide the raw digitzed negative into thirds, since this approximately correctly divides each color filter a respective 2D filter.
+
+<div class="row">
+  <div class="col-sm-4 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/emir_01_blue_channel.jpg" title="Blue channel" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-4 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/emir_02_green_channel.jpg" title="Green channel" class="img-fluid rounded z-depth-1" %}
+  </div>
+  <div class="col-sm-4 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/emir_03_red_channel.jpg" title="Red channel" class="img-fluid rounded z-depth-1" %}
+  </div>
+</div>
 
 ---
 
-### Part 2: Matching Metrics
+### Part 1: Alignment Metrics
 
-- [PLACEHOLDER: L2 / SSD definition.]
-- [PLACEHOLDER: NCC definition.]
-- [PLACEHOLDER: Edge/gradient-based similarity (Sobel/Canny) — bullet placeholder.]
-- [PLACEHOLDER: Robustness to brightness/channel differences — bullet placeholder.]
+Our first approach focussed on minimizing the L2 Norm between a reference filter (green) to the other two filters. This metric simply evaluates the aggregate Euclidean distance between the reference and the target filter, which generally works well, but is highly sensitive to brightness differences between channels (i.e., matching based on the Emir's robe above is not great for L2).
+
+Our second approach focussed on maximizing normalized cross-correlation (NCC), which is more robust, since it is invariant to linear changes in brightness and contrast. This method was generally more effective, since different different color filters naturally produce varying intensities.
+
+##### L2 Norm
+
+$$
+E(\Delta x, \Delta y) = 
+\sum_{x,y} \Big( R(x,y) - F(x+\Delta x, y+\Delta y) \Big)^2
+$$
+
+We minimize \(E(\Delta x, \Delta y)\) to find the displacement \((\Delta x, \Delta y)\) where the shifted filter \(F\) best overlaps with the reference \(R\).
+
+##### Normalized Cross-Correlation (NCC)
+
+$$
+\text{NCC}(\Delta x, \Delta y) = 
+\frac{\sum_{x,y} \big(R(x,y) - \bar{R}\big)\big(F(x+\Delta x, y+\Delta y) - \bar{F}\big)}
+     {\sqrt{\sum_{x,y} \big(R(x,y) - \bar{R}\big)^2} \,
+      \sqrt{\sum_{x,y} \big(F(x+\Delta x, y+\Delta y) - \bar{F}\big)^2}}
+$$
+
+We maximize \(\text{NCC}(\Delta x, \Delta y)\) to find the displacement that yields the strongest correlation between \(R\) and \(F\), regardless of brightness or contrast differences.
+
+##### Variables
+
+- **\(R(x,y)\):** Reference filter/channel (kept fixed, e.g. green).  
+- **\(F(x+\Delta x, y+\Delta y)\):** Filter/channel being aligned (shifted version of red or blue).  
+- **\((\Delta x, \Delta y)\):** Displacement vector we are solving for.  
+- **\(\bar{R}, \bar{F}\):** Mean pixel intensities of \(R\) and \(F\), used for normalization in NCC.  
+
+---
+
+### First Examples
+
+Here are some first outputs I achieved with these two approaches.
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/monastery_pyramid_L2_level4.jpg" title="Monastery Pyramid, L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      L2 Norm alignment result
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/monastery_pyramid_NCC_level4.jpg" title="NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/tobolsk_pyramid_L2_level4.jpg" title="L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Tobolsk Pyramid, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/tobolsk_pyramid_NCC_level4.jpg" title="NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/cathedral_pyramid_L2_level4.jpg" title="L2 Norm" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      Cathedral pyramid, L2 Norm
+    </div>
+  </div>
+  <div class="col-sm-6 mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/cs180/p1/cathedral_pyramid_NCC_level4.jpg" title="NCC" class="img-fluid rounded z-depth-1" %}
+    <div class="caption text-center mt-2">
+      NCC
+    </div>
+  </div>
+</div>
 
 ---
 
