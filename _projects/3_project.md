@@ -123,12 +123,32 @@ Below are three sample kernels I used to convolve some images.
 
 Here is a summary of the compute time I observed when performing the 9x9 box filter convolution on the above image, compared to scipy.signal.convolve2d as a benchmark, along with a comparison of differences to the output provided by the SciPy method.
 
-| Implementation | Time Taken (s) | Max Difference to SciPy |
-|-----------------|----------------|--------------------------|
-| Four loops      | 10.100        | 1.44e-15   |
-| Two loops       | 0.956         | 5.55e-16    |
-| SciPy           | 0.041        | 0                        |
-
+<table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Implementation</th>
+            <th>Time Taken (s)</th>
+            <th>Max Difference to SciPy</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Four loops</td>
+            <td>10.100</td>
+            <td>1.44e-15</td>
+        </tr>
+        <tr>
+            <td>Two loops</td>
+            <td>0.956</td>
+            <td>5.55e-16</td>
+        </tr>
+        <tr>
+            <td>SciPy</td>
+            <td>0.041</td>
+            <td>0</td>
+        </tr>
+    </tbody>
+</table>
 
 As can be seen, the maximum differences from the reference function are extremely small, which can be attributed to minor variations in floating-point precision.
 
@@ -142,7 +162,7 @@ For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference im
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/11/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dx.png" title="dx" class="img-fluid rounded z-depth-1" %}
@@ -177,7 +197,7 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_blurred.png" title="Blurred" class="img-fluid rounded z-depth-1" %}
@@ -286,7 +306,7 @@ Some more examples from my personal photo library:
         {% include figure.liquid path="assets/img/cs180/p2/21/high_freq_lv_billboard.png" title="lv_billboard HF" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/21/lv_billboard.jpg" title="lv_billboard original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/21/lv_billboard.jpeg" title="lv_billboard original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_lv_billboard.png" title="lv_billboard sharp" class="img-fluid rounded z-depth-1" %}
@@ -314,7 +334,7 @@ Note: The last image is sharpened using a higher strength factor than the previo
         {% include figure.liquid path="assets/img/cs180/p2/21/shake.jpeg" title="shake original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/21/blurred_shake.jpeg" title="shake blurred" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/21/blurred_shake.png" title="shake blurred" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_blurred_shake.png" title="shake resharpened" class="img-fluid rounded z-depth-1" %}
@@ -352,7 +372,7 @@ Then, I manually selected the alignment reference points on each image.
 </div>
 <p class="text-center">Left: Cyprian, aligned, Right: Florentin, aligned.</p>
 
-After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2.8,~\sigma_{high~pass} = 2.8}$
+After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2.8,~\sigma_{high~pass} = 2.8}$.
 
 <div class="row">
     <div class="col-sm">
@@ -365,6 +385,7 @@ After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2
 <p class="text-center">Left: Cyprian, high pass, Right: Florentin low pass.</p>
 
 Final overlayed output:
+
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/final_hybrid.png" title="cyprian flo hybrid" class="img-fluid rounded z-depth-1" %}
@@ -375,11 +396,9 @@ Final overlayed output:
 
 ##### Fourier Transform Analysis
 
+To get a better impression of how the hybrid image technique works, I analyzed the frequency content of each stage in the process. The Fourier transform visualizations show which spatial frequencies are present in each image. Low frequencies appear in the center, while high frequencies extend outward. This analysis reveals how our Gaussian and impulse filters isolate different frequency components.
 
-**Frequency Analysis:**
-The Fourier transform visualizations show the log magnitude of the 2D FFT for each image, computed using `np.log(np.abs(np.fft.fftshift(np.fft.fft2(gray_image))))`. In these frequency domain representations, the center corresponds to low frequencies (DC component), while higher frequencies extend radially outward. Bright regions indicate strong frequency content at those spatial frequencies.
-
-The original images show broad frequency distributions across the spectrum. After filtering, the low-pass image retains primarily the central (low-frequency) components, removing fine details and edges. The high-pass filtered image shows the opposite—strong high-frequency content around the edges with suppressed low frequencies, appearing as mostly the outline and texture information. The final hybrid image combines both frequency ranges, creating the dual-perception effect where low frequencies dominate at distance while high frequencies are visible up close.
+Originals and their FFT 
 
 **Additional Examples:**
 
