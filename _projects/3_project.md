@@ -18,21 +18,22 @@ This project explores edge detection with finite differences and Gaussian smooth
 
 #### 1.1 Convolutions from Scratch
 
-```convolve2d_np_four``` pads the input image with zeros, flips the kernel, and then performs the convolution: For each output pixel, I multiply every overlapping kernel element with the corresponding padded input element and add the result.
+Convolutions are operations performed on images to extract features from the image, in this first case, edges. They involve a kernel that moves across the image, performing element-wise multiplication and summation with the overlapping image region.
 
-```convolve2d_np_two``` performs the same operation with reduced computational complexity: At each position I extract a region of interest the same size as the kernel, multiply each element with the kernel, and sum the result.
+I implemented two methods from scratch in NumPy to perform a convolution:
+
+- **`convolve2d_np_four`**: The filter is applied at each pixel location by flipping the kernel and multiplying it with the corresponding image patch.
+- **`convolve2d_np_two`**: This method reduces computation by extracting a region from the image and performing the convolution in a more efficient manner.
 
 ```
 def convolve2d_np_four(i, k):
     h, w = i.shape
     kh, kw = k.shape
 
-    # add padding
     i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
     
     k_flip = np.flip(k)
 
-    # add convolution to out
     out = np.zeros((h, w))
     for i in range(h):
         for j in range(w):
@@ -47,6 +48,7 @@ def convolve2d_np_two(i, k):
     kh, kw = k.shape
 
     i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
+    
     k_flip = np.flip(k)
 
     out = np.zeros((h, w))
@@ -57,6 +59,61 @@ def convolve2d_np_two(i, k):
 
     return out
 ```
+
+##### Filters
+
+Below are three sample kernels I use to convolve some images. 
+
+<div class="row">
+    <div class="col-sm">
+        <strong>D<sub>x</sub></strong>
+        <p>This finite difference filter detects vertical edges by computing the difference between horizontal pixel intensities.</p>
+        <pre>
+        [[1,  0, -1]]
+        </pre>
+    </div>
+    <div class="col-sm">
+        <strong>D<sub>y</sub></strong>
+        <p>This finite difference filter detects horizontal edges by computing the difference between vertical pixel intensities.</p>
+        <pre>
+        [[1],
+         [0],
+         [-1]]
+        </pre>
+    </div>
+    <div class="col-sm">
+        <strong>Box Filter</strong>
+        <p>This filter replaces each pixel with the average of its neighbors (blur).</p>
+        <pre>
+        1/81 * [[1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        </pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/11/cyprian.png" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/11/dx_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/11/dy_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/11/box_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Figure 1: From left to right, the original image, the D<sub>x</sub> (vertical edge detection) applied to it, then D<sub>y</sub> (horizontal edge detection), and finally the 9x9 box filter (blurring).</p>
+
 
 ##### Convolve Implementations Performance
 <div class="row">
@@ -73,6 +130,8 @@ def convolve2d_np_two(i, k):
 ---
 
 #### 1.2 Finite Difference Operator
+
+Finite difference operators are used to compute the derivative of an image, highlighting regions of rapid intensity change (edges). The gradient magnitude gives the strength of the edge, and the direction of the gradient indicates the edge orientation.
 
 **Task:** Show partial derivatives in x and y, gradient magnitude, and binarized edge image.
 
@@ -94,6 +153,8 @@ def convolve2d_np_two(i, k):
 ---
 
 #### 1.3 Derivative of Gaussian (DoG) Filter
+
+The Derivative of Gaussian (DoG) filter is used for edge detection. It is obtained by taking the derivative of the Gaussian function, emphasizing regions of rapid intensity change.
 
 **Task:** Construct Gaussian filters, build DoG filters, visualize and compare results.
 
