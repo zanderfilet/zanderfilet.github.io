@@ -86,7 +86,7 @@ Below are three sample kernels I used to convolve some images.
         <strong>Box Filter</strong>
         <p>This filter replaces each pixel with the average of its neighbors (blur).</p>
         $$
-        	ext{Box Filter} = \frac{1}{81}
+        	Box = \frac{1}{81}
         \begin{bmatrix}
         1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
         1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
@@ -116,7 +116,7 @@ Below are three sample kernels I used to convolve some images.
         {% include figure.liquid path="assets/img/cs180/p2/11/box_filter_cyp.png" title="box filter" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">From left to right, the original, D<sub>x</sub> applied to it, then D<sub>y</sub>, then the box filter.</p>
+<p class="text-center">From left to right, the original, $D_x$ applied to it, then $D_y$, then the box filter.</p>
 
 
 #### Efficiency and Accuracy of Convolution Implementations
@@ -128,6 +128,7 @@ Here is a summary of the compute time I observed when performing the 9x9 box fil
 | Four loops      | 10.100        | 1.44e-15   |
 | Two loops       | 0.956         | 5.55e-16    |
 | SciPy           | 0.041        | 0                        |
+
 
 As can be seen, the maximum differences from the reference function are extremely small, which can be attributed to minor variations in floating-point precision.
 
@@ -141,7 +142,7 @@ For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference im
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/11/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dx.png" title="dx" class="img-fluid rounded z-depth-1" %}
@@ -150,7 +151,7 @@ For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference im
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dy.png" title="dy" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Original, D<sub>x</sub>, D<sub>y</sub>.</p>
+<p class="text-center">Original, $D_x$, $D_y$.</p>
 
 Next, I computed the gradient magnitude between the two convolutions, as seen in the first image below, and manually set a threshold to isolate edges from noise.
 
@@ -182,7 +183,7 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
         {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_blurred.png" title="Blurred" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: original, Right: Gaussian blur applied ($$kernel_size = 15$$, $$\sigma=2$$).</p>
+<p class="text-center">Left: Original, Right: Gaussian blur applied ($kernel~size = 15$, $\sigma=2$).</p>
 
 <div class="row">
     <div class="col-sm">
@@ -192,7 +193,7 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
         {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dy_blurred.png" title="Dy blurred" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: $$D_x$$ filter applied on blurred image, Right: $$D_y$$ filter applied on blurred image.</p>
+<p class="text-center">Left: $D_x$ filter applied on blurred image, Right: $D_y$ filter applied on blurred image.</p>
 
 <div class="row">
     <div class="col-sm">
@@ -204,7 +205,7 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
 </div>
 <p class="text-center">Left: Gradient magnitude composite, Right: Binarized edge image.</p>
 
-The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = G * (D_x * I) = (G * D_x) * I$$, where $G$ is the Gaussian filter, $D_x$ is the derivative filter, and $I$ is the image.
+The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = (G * D_x) * I$$, where $G$ is the Gaussian filter and $I$ is the image.
 
 <div class="row">
     <div class="col-sm">
@@ -215,16 +216,6 @@ The order of convolutions can also be changed, by first convolving the Gaussian 
     </div>
 </div>
 <p class="text-center">Left: $D_x$ DoG, Right: $D_y$ DoG.</p>
-
-<div class="row">
-    <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dx_dog.png" title="dx DoG" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dy_dog.png" title="dy DoG" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<p class="text-center">Left: Original convolved on $D_x$ DoG, Right: Original convolved on $D_y$ DoG.</p>
 
 <div class="row">
     <div class="col-sm">
@@ -273,21 +264,63 @@ As before, the maximum differences between the DoG and blurred approaches are ex
 
 #### 2.1 Image Sharpening (Unsharp Mask)
 
-**Task:** Implement unsharp mask filter, show blurred, high-frequency, and sharpened images. Vary sharpening amount.
+Next, I implemented an image sharpening technique, by creating an unsharp mask filter. It works by first blurring the original with a Gaussian filter, which is then subtracted from the original, isolating the high-frequency components. By adding more of these high frequencies scaled by some strength paramater into the original image, the unsharp mask filter pronounces edges, producing a 'sharpening' effect. Below are some examples.
 
-**Code:**
-```python
-# Paste your unsharp mask code here
-```
-
-**Results:**
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_blur.jpg" title="Blurred" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_highfreq.jpg" title="High Frequency" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_sharp.jpg" title="Sharpened" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/high_freq_taj.png" title="Taj HF" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/taj.jpg" title="Taj original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_taj.png" title="Taj sharp" class="img-fluid rounded z-depth-1" %}
+    </div>
 </div>
+<p class="text-center">Left: High-frequences, Center: Original Taj Mahal Right: Sharpened Taj Mahal (factor=1.2).</p>
 
-**Discussion:**
+Some more examples from my personal photo library:
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/high_freq_lv_billboard.png" title="lv_billboard HF" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/lv_billboard.jpg" title="lv_billboard original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_lv_billboard.png" title="lv_billboard sharp" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: High-frequences, Center: Original Las Vegas sign Right: Sharpened Las Vegas sign (factor=1.2).</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/high_freq_shenoy.png" title="shenoy HF" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/shenoy.jpeg" title="shenoy original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_shenoy.png" title="shenoy sharp" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: High-frequences, Center: Original Shenoy Right: Sharpened Shenoy (factor=3).</p>
+
+Note: The last image is sharpened using a higher strength factor than the previous examples. While this increases the prominence of edges, it also amplifies high-frequency noise present in the image, producing a grainier appearance. This demonstrates that too much sharpening can enhance unwanted details and artifacts. For a final demonstration of the sharpening process, I intentionally blurred an image, then applied the unsharp mask to assess how well the original can be reconstructed. Results are below:
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/shake.jpeg" title="shake original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/blurred_shake.jpeg" title="shake blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_blurred_shake.png" title="shake resharpened" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Original, Center: Manually blurred input $(sn=8, \sigma=1)$ Shenoy Right: Sharpened blur (factor=2.5).</p>
 
 ---
 
