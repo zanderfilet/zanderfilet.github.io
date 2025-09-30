@@ -10,7 +10,7 @@ img: assets/img/cs180/p2/cover.png
 
 ### Overview
 
-This project explores edge detection with finite differences and Gaussian smoothing, image sharpening with unsharp masking, hybrid images by mixing high and low frequencies, and multi-resolution blending with Gaussian and Laplacian stacks for seamless composites.
+In this project, I explored edge detection with finite differences and Gaussian smoothing, image sharpening with unsharp masking, hybrid images by mixing high and low frequencies, and multi-resolution blending with Gaussian and Laplacian stacks for seamless composites.
 
 ---
 
@@ -65,7 +65,7 @@ For clarity, padding is applied to the image to ensure that the convolution oper
 
 ##### Filters
 
-Below are three sample kernels I use to convolve some images. 
+Below are three sample kernels I used to convolve some images. 
 
 <div class="row">
     <div class="col-sm">
@@ -121,7 +121,7 @@ Below are three sample kernels I use to convolve some images.
 
 #### Efficiency and Accuracy of Convolution Implementations
 
-Here is a summary of compute time to perform the 9x9 box filter convolution on the above image, compared to scipy.signal.convolve2d as a benchmark, along with a comparison of differences to the output provided by the SciPy method.
+Here is a summary of the compute time I observed when performing the 9x9 box filter convolution on the above image, compared to scipy.signal.convolve2d as a benchmark, along with a comparison of differences to the output provided by the SciPy method.
 
 | Implementation | Time Taken (s) | Max Difference to SciPy |
 |-----------------|----------------|--------------------------|
@@ -129,15 +129,15 @@ Here is a summary of compute time to perform the 9x9 box filter convolution on t
 | Two loops       | 0.956         | 5.55e-16    |
 | SciPy           | 0.041        | 0                        |
 
-As we can see, the maximum differences from the reference function are extremely small, which can be attributed to minor variations in floating-point precision.
+As can be seen, the maximum differences from the reference function are extremely small, which can be attributed to minor variations in floating-point precision.
 
 ---
 
 #### 1.2 Finite Difference Operator
 
-Finite difference operators are used to compute the derivative of an image, highlighting regions with large intensity changes (what our eyes perceive as edges). By calculating the gradient magnitude from the $$D_x$$ and $$D_y$$ filters (by simply computing the magnitude of both filtered images combined), we can produce a composite edge-detection image.
+I used finite difference operators to compute the derivative of an image, highlighting regions with large intensity changes (what our eyes perceive as edges). By calculating the gradient magnitude from the $$D_x$$ and $$D_y$$ filters (by simply computing the magnitude of both filtered images combined), I produced a composite edge-detection image.
 
-For example, let's apply the $$D_x$$ and $$D_y$$ filters to the reference image shown on the left.
+For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference image shown on the left.
 
 <div class="row">
     <div class="col-sm">
@@ -152,20 +152,21 @@ For example, let's apply the $$D_x$$ and $$D_y$$ filters to the reference image 
 </div>
 <p class="text-center">Original, D<sub>x</sub>, D<sub>y</sub>.</p>
 
-Now, we compute the gradient magnitude and manually 
+Next, I computed the gradient magnitude between the two convolutions, as seen in the first image below, and manually set a threshold to isolate edges from noise.
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_gradient.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_edges.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
+<p class="text-center">Gradient magnitude image, binarized edge image.</p>
 
-Justification for threshold
+I selected a pixel intensity threshold of 0.3 to classify edges. My reasoning was that I preferred to preserve edge continuity, even if it meant retaining some noise in the image. This threshold struck a healthy balance, eliminating most of the noise in the grass while almost perfectly maintaining the outline of the subject.
 
-Comment on noise
+Nevertheless, these edge detections still appear somewhat noisy, so in the next section I explore the use of Gaussian blurs to clean up the output.
 
 ---
 
@@ -290,27 +291,6 @@ The Derivative of Gaussian (DoG) filter is used for edge detection. It is obtain
 </div>
 
 **Discussion:**
-
----
-
-#### Bells & Whistles: Color Blending
-
-**Task:** Try color blending, show and discuss results.
-
----
-
-### Deliverables Checklist
-
-- [ ] Part 1.1: Convolution implementations and comparison
-- [ ] Part 1.2: Partial derivatives, gradient magnitude, binarized edge
-- [ ] Part 1.3: Gaussian and DoG filters, comparison
-- [ ] Bells & Whistles: Gradient orientation visualization
-- [ ] Part 2.1: Unsharp mask filter, results, discussion
-- [ ] Part 2.2: Hybrid images, process, results
-- [ ] Bells & Whistles: Color hybrid exploration
-- [ ] Part 2.3: Gaussian and Laplacian stacks, visualization
-- [ ] Part 2.4: Multiresolution blending, custom blends
-- [ ] Bells & Whistles: Color blending
 
 ---
 
