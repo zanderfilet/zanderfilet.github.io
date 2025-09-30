@@ -1,11 +1,11 @@
 ---
 layout: page
-title: CS180 - Project 1. Colorizing Prokudin-Gorskii
+title: Colorizing Prokudin-Gorskii
 description: Cyprian Zander
 importance: 1
 category: CS180
 related_publications: false
-img: assets/img/cs180/p1/cover.jpg
+img: assets/img/cs180/p1/emir_pyramid_NCC_level4_eq_cropped.jpg
 ---
 
 ### Overview

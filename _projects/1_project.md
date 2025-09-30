@@ -1,6 +1,6 @@
 ---
 layout: page
-title: CS180 - Project 0. Becoming Friends with Your Camera
+title: Becoming Friends with Your Camera
 description: Cyprian Zander
 importance: 1
 category: CS180
