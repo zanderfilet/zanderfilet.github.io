@@ -8,76 +8,201 @@ related_publications: false
 img: assets/img/cs180/p2/cover.png
 ---
 
-### Part 1: Selfie — The Wrong Way vs. The Right Way
+### Overview
 
-Every project has a beautiful feature showcase page.
-It's easy to include images in a flexible 3-column grid format.
-Make your photos 1/3, 2/3, or full width.
+This project explores 2D convolutions, filtering, and frequency-based image processing. The deliverables include code, results, and explanations for each section below.
 
-To give your project a background in the portfolio page, just add the img tag to the front matter like so:
+---
 
-    ---
-    layout: page
-    title: project
-    description: a project with a background image
-    img: /assets/img/12.jpg
-    ---
+### Part 1: Fun with Filters
 
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/3.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Caption photos easily. On the left, a road goes through a tunnel. Middle, leaves artistically fall in a hipster photoshoot. Right, in another hipster photoshoot, a lumberjack grasps a handful of pine needles.
-</div>
-<div class="row">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/5.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    This image can also have a caption. It's like magic.
-</div>
+#### 1.1 Convolutions from Scratch
 
-You can also put regular text between your rows of images.
-Say you wanted to write a little bit about your project before you posted the rest of the images.
-You describe how you toiled, sweated, _bled_ for your project, and then... you reveal its glory in the next row of images.
+**Task:** Implement convolution with numpy (4 loops, 2 loops, and compare with scipy). Discuss runtime and boundary handling.
 
-<div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-    <div class="col-sm-4 mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    You can also have artistically styled 2/3 + 1/3 images, like these.
-</div>
-
-The code is simple.
-Just wrap your images with `<div class="col-sm">` and place them inside `<div class="row">` (read more about the <a href="https://getbootstrap.com/docs/4.4/layout/grid/">Bootstrap Grid</a> system).
-To make images responsive, add `img-fluid` class to each; for rounded corners and shadows use `rounded` and `z-depth-1` classes.
-Here's the code for the last row of images above:
-
-{% raw %}
-
-```html
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/6.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-  <div class="col-sm-4 mt-3 mt-md-0">
-    {% include figure.liquid path="assets/img/11.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
-  </div>
-</div>
+**Code:**
+```python
+# Paste your convolution implementations here
 ```
 
-{% endraw %}
+**Results:**
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/your_image.jpg" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/box_filter.jpg" title="Box Filter Result" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+**Discussion:**
+
+---
+
+#### 1.2 Finite Difference Operator
+
+**Task:** Show partial derivatives in x and y, gradient magnitude, and binarized edge image.
+
+**Code:**
+```python
+# Paste your finite difference and edge detection code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dx.jpg" title="Dx" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dy.jpg" title="Dy" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gradient_mag.jpg" title="Gradient Magnitude" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/edge.jpg" title="Binarized Edge" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### 1.3 Derivative of Gaussian (DoG) Filter
+
+**Task:** Construct Gaussian filters, build DoG filters, visualize and compare results.
+
+**Code:**
+```python
+# Paste your DoG filter code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gaussian.jpg" title="Gaussian" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dx.jpg" title="DoG Dx" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dy.jpg" title="DoG Dy" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### Bells & Whistles: Gradient Orientation Visualization
+
+**Task:** Compute and visualize gradient orientations (HSV color space).
+
+**Code & Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/orientation.jpg" title="Gradient Orientation" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+### Part 2: Fun with Frequencies
+
+#### 2.1 Image Sharpening (Unsharp Mask)
+
+**Task:** Implement unsharp mask filter, show blurred, high-frequency, and sharpened images. Vary sharpening amount.
+
+**Code:**
+```python
+# Paste your unsharp mask code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_blur.jpg" title="Blurred" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_highfreq.jpg" title="High Frequency" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/taj_sharp.jpg" title="Sharpened" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### 2.2 Hybrid Images
+
+**Task:** Create hybrid images, show process for one, originals and results for others.
+
+**Code:**
+```python
+# Paste your hybrid image code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid1.jpg" title="Hybrid Example 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid2.jpg" title="Hybrid Example 2" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid3.jpg" title="Hybrid Example 3" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### Bells & Whistles: Color Hybrid Exploration
+
+**Task:** Explore color in hybrid images, justify choices.
+
+**Results & Discussion:**
+
+---
+
+#### 2.3 Gaussian and Laplacian Stacks
+
+**Task:** Implement and visualize stacks for blending.
+
+**Code:**
+```python
+# Paste your stack code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gaussian_stack.jpg" title="Gaussian Stack" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/laplacian_stack.jpg" title="Laplacian Stack" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### 2.4 Multiresolution Blending (Oraple)
+
+**Task:** Blend images with mask, show results for apple/orange and custom blends.
+
+**Code:**
+```python
+# Paste your blending code here
+```
+
+**Results:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/oraple.jpg" title="Oraple" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/custom_blend1.jpg" title="Custom Blend 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/custom_blend2.jpg" title="Custom Blend 2" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+
+**Discussion:**
+
+---
+
+#### Bells & Whistles: Color Blending
+
+**Task:** Try color blending, show and discuss results.
+
+---
+
+### Deliverables Checklist
+
+- [ ] Part 1.1: Convolution implementations and comparison
+- [ ] Part 1.2: Partial derivatives, gradient magnitude, binarized edge
+- [ ] Part 1.3: Gaussian and DoG filters, comparison
+- [ ] Bells & Whistles: Gradient orientation visualization
+- [ ] Part 2.1: Unsharp mask filter, results, discussion
+- [ ] Part 2.2: Hybrid images, process, results
+- [ ] Bells & Whistles: Color hybrid exploration
+- [ ] Part 2.3: Gaussian and Laplacian stacks, visualization
+- [ ] Part 2.4: Multiresolution blending, custom blends
+- [ ] Bells & Whistles: Color blending
+
+---
+
+### Reflection: What I Learned
+
+_Summarize the most important thing you learned from this project._
