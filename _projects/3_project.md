@@ -119,7 +119,7 @@ Below are three sample kernels I used to convolve some images.
 <p class="text-center">From left to right, the original, $D_x$ applied to it, then $D_y$, then the box filter.</p>
 
 
-#### Efficiency and Accuracy of Convolution Implementations
+##### Efficiency and Accuracy of Convolution Implementations
 
 Here is a summary of the compute time I observed when performing the 9x9 box filter convolution on the above image, compared to scipy.signal.convolve2d as a benchmark, along with a comparison of differences to the output provided by the SciPy method.
 
@@ -326,21 +326,78 @@ Note: The last image is sharpened using a higher strength factor than the previo
 
 #### 2.2 Hybrid Images
 
-**Task:** Create hybrid images, show process for one, originals and results for others.
+Next, I created hybrid images by combining high and low frequency components from different images. The idea comes from the fact that human visual perception is sensitive to high frequencies when viewing images up close, but primarily detects low frequencies when viewing from a distance. By blending different frequency ranges between two images, a single image can show different subjects depending on the distance it is viewed at.
 
-**Code:**
-```python
-# Paste your hybrid image code here
-```
+The methodology works similarly to steps taken earlier. By applying a standard 2D Gaussian filter to extract low frequencies from one image, and creating a high-pass filter by subtracting the Gaussian-filtered version from the original image (equivalent to an impulse filter minus the Gaussian), we can overlay both outputs to produce the hybrid. Finding good cutoff frequencies (the $\sigma$ parameter for each Gaussian filter) requires some experimenting and really depends on the observer. For my implementation, I aligned image pairs using an alignment code (focussing on eye alignment for human subjects). Below is a rundown of the full process.
 
-**Results:**
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid1.jpg" title="Hybrid Example 1" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid2.jpg" title="Hybrid Example 2" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/hybrid3.jpg" title="Hybrid Example 3" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/unaligned_high_cyp.png" title="cyprian unaligned" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/unaligned_low_flo.png" title="flo unaligned" class="img-fluid rounded z-depth-1" %}
+    </div>
 </div>
+<p class="text-center">Left: Cyprian (high pass), unaligned, Right: Florentin (low pass), unaligned.</p>
 
-**Discussion:**
+Then, I manually selected the alignment reference points on each image.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/aligned_high_cyp.png" title="cyprian aligned" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/aligned_low_flo.png" title="flo aligned" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Cyprian, aligned, Right: Florentin, aligned.</p>
+
+After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2.8,~\sigma_{high~pass} = 2.8}$
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/filtered_highpass_high_cyp.png" title="cyprian high pass" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/filtered_highpass_low_flo.png" title="flo low pass" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Cyprian, high pass, Right: Florentin low pass.</p>
+
+Final overlayed output:
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/final_hybrid.png" title="cyprian flo hybrid" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Cyprentin.</p>
+
+
+##### Fourier Transform Analysis
+
+
+**Frequency Analysis:**
+The Fourier transform visualizations show the log magnitude of the 2D FFT for each image, computed using `np.log(np.abs(np.fft.fftshift(np.fft.fft2(gray_image))))`. In these frequency domain representations, the center corresponds to low frequencies (DC component), while higher frequencies extend radially outward. Bright regions indicate strong frequency content at those spatial frequencies.
+
+The original images show broad frequency distributions across the spectrum. After filtering, the low-pass image retains primarily the central (low-frequency) components, removing fine details and edges. The high-pass filtered image shows the opposite—strong high-frequency content around the edges with suppressed low frequencies, appearing as mostly the outline and texture information. The final hybrid image combines both frequency ranges, creating the dual-perception effect where low frequencies dominate at distance while high frequencies are visible up close.
+
+**Additional Examples:**
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/aligned_high_jj.png" title="JJ source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/aligned_low_khan.png" title="Khan source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/final_hybrid.png" title="JJ-Khan hybrid" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">JJ and Khan hybrid: High frequencies from JJ, low frequencies from Khan ($$\sigma_1=8, \sigma_2=2.5, \alpha=0.9$$).</p>
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/aligned_nutmeg.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/aligned_DerekPicture.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/final_hybrid.png" title="Cat-Derek hybrid" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Cat and Professor hybrid: High frequencies from cat (Nutmeg), low frequencies from Professor Derek ($$\sigma_1=8, \sigma_2=1.5, \alpha=0.9$$).</p>
+
+The hybrid images demonstrate varying degrees of success. The first example (Cyprian/Florence) works particularly well due to similar facial structure and lighting conditions. The second example shows how different head poses can create interesting morphing effects. The third example illustrates the challenge of combining subjects with very different scales and orientations, though it still produces an intriguing result when viewed at different distances.
 
 ---
 
