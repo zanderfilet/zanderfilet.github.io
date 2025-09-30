@@ -204,34 +204,68 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
 </div>
 <p class="text-center">Left: Gradient magnitude composite, Right: Binarized edge image.</p>
 
-The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = G * (D_x * I) = (G * D_x) * I$$, where $G$ is the Gaussian filter, $D_x$ is the derivative filter, and $I$ is the image. This principle allows us to combine smoothing and edge detection into one operation, improving both efficiency and results.
+The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = G * (D_x * I) = (G * D_x) * I$$, where $G$ is the Gaussian filter, $D_x$ is the derivative filter, and $I$ is the image.
 
-**Code:**
-```python
-# Paste your DoG filter code here
-```
-
-**Results:**
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gaussian.jpg" title="Gaussian" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dx.jpg" title="DoG Dx" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dy.jpg" title="DoG Dy" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/derivative_gaussian_x.png" title="Grad mag blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/derivative_gaussian_y.png" title="Binarized edge blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
 </div>
+<p class="text-center">Left: $D_x$ DoG, Right: $D_y$ DoG.</p>
 
-**Discussion:**
-
----
-
-#### Bells & Whistles: Gradient Orientation Visualization
-
-**Task:** Compute and visualize gradient orientations (HSV color space).
-
-**Code & Results:**
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/orientation.jpg" title="Gradient Orientation" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dx_dog.png" title="dx DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dy_dog.png" title="dy DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
 </div>
+<p class="text-center">Left: Original convolved on $D_x$ DoG, Right: Original convolved on $D_y$ DoG.</p>
 
-**Discussion:**
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dx_dog.png" title="dx DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dy_dog.png" title="dy DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Original convolved on $D_x$ DoG, Right: Original convolved on $D_y$ DoG.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_grad_dog.png" title="Grad mag DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_edge_dog.png" title="Binarized edge DoG" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Gradient magnitude composite, Right: Binarized edge image.</p>
+
+<table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Comparison</th>
+            <th>Max Difference</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dx (DoG vs. Blurred)</td>
+            <td>1.30e-15</td>
+        </tr>
+        <tr>
+            <td>dy (DoG vs. Blurred)</td>
+            <td>1.35e-15</td>
+        </tr>
+    </tbody>
+</table>
+
+As before, the maximum differences between the DoG and blurred approaches are extremely small, which is simply variation in floating-point precision, confirming that the order of operations yields identical results.
 
 ---
 
