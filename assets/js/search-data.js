@@ -416,19 +416,19 @@ ninja.data = [{
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "News",},{id: "projects-cs180-project-0-becoming-friends-with-your-camera",
-          title: 'CS180 - Project 0. Becoming Friends with Your Camera',
+          section: "News",},{id: "projects-becoming-friends-with-your-camera",
+          title: 'Becoming Friends with Your Camera',
           description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
-            },},{id: "projects-cs180-project-1-colorizing-prokudin-gorskii",
-          title: 'CS180 - Project 1. Colorizing Prokudin-Gorskii',
+            },},{id: "projects-colorizing-prokudin-gorskii",
+          title: 'Colorizing Prokudin-Gorskii',
           description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
-            },},{id: "projects-project-3-with-very-long-name",
-          title: 'project 3 with very long name',
-          description: "a project that redirects to another website",
+            },},{id: "projects-fun-with-filters-and-frequencies",
+          title: 'Fun with Filters and Frequencies',
+          description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_project/";
             },},{id: "projects-project-4",
