@@ -107,13 +107,13 @@ Below are three sample kernels I used to convolve some images.
         {% include figure.liquid path="assets/img/cs180/p2/11/cyprian.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/11/dx_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/11/dx_filter_cyp.png" title="dx" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/11/dy_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/11/dy_filter_cyp.png" title="dy" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/11/box_filter_cyp.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/11/box_filter_cyp.png" title="box filter" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">From left to right, the original, D<sub>x</sub> applied to it, then D<sub>y</sub>, then the box filter.</p>
@@ -144,10 +144,10 @@ For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference im
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dx.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dx.png" title="dx" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dy.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dy.png" title="dy" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">Original, D<sub>x</sub>, D<sub>y</sub>.</p>
@@ -156,10 +156,10 @@ Next, I computed the gradient magnitude between the two convolutions, as seen in
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_gradient.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_gradient.png" title="Grad mag" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_edges.png" title="Original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_edges.png" title="Binarized edges" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">Gradient magnitude image, binarized edge image.</p>
@@ -172,9 +172,39 @@ Nevertheless, these edge detections still appear somewhat noisy, so in the next 
 
 #### 1.3 Derivative of Gaussian (DoG) Filter
 
-The Derivative of Gaussian (DoG) filter is used for edge detection. It is obtained by taking the derivative of the Gaussian function, emphasizing regions of rapid intensity change.
+To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer product of a 1D Gaussian) to the original image before applying the $$D_x$$ and $$D_y$$ filters. Applying a Gaussian filter reduces high-frequency noise in the image, which helps the finite difference filters produce cleaner and more continuous edge detections. Below is each step in the procedure.
 
-**Task:** Construct Gaussian filters, build DoG filters, visualize and compare results.
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman.png" title="Original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_blurred.png" title="Blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: original, Right: Gaussian blur applied ($$kernel_size = 15$$, $$\sigma=2$$).</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dx_blurred.png" title="Dx blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_dy_blurred.png" title="Dy blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: $$D_x$$ filter applied on blurred image, Right: $$D_y$$ filter applied on blurred image.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_grad_blurred.png" title="Grad mag blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/13/cameraman_edge_blurred.png" title="Binarized edge blurred" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Gradient magnitude composite, Right: Binarized edge image.</p>
+
+The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = G * (D_x * I) = (G * D_x) * I$$, where $G$ is the Gaussian filter, $D_x$ is the derivative filter, and $I$ is the image. This principle allows us to combine smoothing and edge detection into one operation, improving both efficiency and results.
 
 **Code:**
 ```python
@@ -183,7 +213,7 @@ The Derivative of Gaussian (DoG) filter is used for edge detection. It is obtain
 
 **Results:**
 <div class="row">
-    <div class="col-sm">{% include fignure.liquid path="assets/img/cs180/p2/gaussian.jpg" title="Gaussian" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gaussian.jpg" title="Gaussian" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dx.jpg" title="DoG Dx" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/dog_dy.jpg" title="DoG Dy" class="img-fluid rounded z-depth-1" %}</div>
 </div>
