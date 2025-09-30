@@ -10,7 +10,7 @@ img: assets/img/cs180/p2/cover.png
 
 ### Overview
 
-This project explores 2D convolutions, filtering, and frequency-based image processing. The deliverables include code, results, and explanations for each section below.
+This project explores edge detection with finite differences and Gaussian smoothing, image sharpening with unsharp masking, hybrid images by mixing high and low frequencies, and multi-resolution blending with Gaussian and Laplacian stacks for seamless composites.
 
 ---
 
@@ -18,14 +18,47 @@ This project explores 2D convolutions, filtering, and frequency-based image proc
 
 #### 1.1 Convolutions from Scratch
 
-**Task:** Implement convolution with numpy (4 loops, 2 loops, and compare with scipy). Discuss runtime and boundary handling.
+```convolve2d_np_four``` pads the input image with zeros, flips the kernel, and then performs the convolution: For each output pixel, I multiply every overlapping kernel element with the corresponding padded input element and add the result.
 
-**Code:**
-```python
-# Paste your convolution implementations here
+```convolve2d_np_two``` performs the same operation with reduced computational complexity: At each position I extract a region of interest the same size as the kernel, multiply each element with the kernel, and sum the result.
+
+```
+def convolve2d_np_four(i, k):
+    h, w = i.shape
+    kh, kw = k.shape
+
+    # add padding
+    i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
+    
+    k_flip = np.flip(k)
+
+    # add convolution to out
+    out = np.zeros((h, w))
+    for i in range(h):
+        for j in range(w):
+            for ki in range(kh):
+                for kj in range(kw):
+                    out[i, j] += i_pad[i + ki, j + kj] * k_flip[ki, kj]
+
+    return out
+
+def convolve2d_np_two(i, k):
+    h, w = i.shape
+    kh, kw = k.shape
+
+    i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
+    k_flip = np.flip(k)
+
+    out = np.zeros((h, w))
+    for i in range(h):
+        for j in range(w):
+            roi = i_pad[i:i+kh, j:j+kw] # full pixel-wise convolution
+            out[i, j] = np.sum(roi * k_flip)
+
+    return out
 ```
 
-**Results:**
+##### Convolve Implementations Performance
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/your_image.jpg" title="Original" class="img-fluid rounded z-depth-1" %}

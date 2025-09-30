@@ -73,8 +73,6 @@ $$
 
 We maximize $\text{NCC}(\Delta x, \Delta y)$ to find the displacement that yields the strongest correlation between $R$ and $F$, regardless of brightness or contrast differences.
 
-##### Variables
-
 - **$R(x,y)$:** Reference filter/channel (kept fixed, e.g. green).  
 - **$F(x+\Delta x, y+\Delta y)$:** Filter/channel being aligned (shifted version of red or blue).  
 - **$(\Delta x, \Delta y)$:** Displacement vector we are solving for.  
