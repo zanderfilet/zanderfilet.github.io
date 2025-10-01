@@ -576,3 +576,30 @@ In short, we simply needed to add all layers of the stack together for the final
 
 Here are some more fun examples I developed.
 
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/mountains.png" title="mountains" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/beach.png" title="beach" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/mask.png" title="mask" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Left: Image 1, mountains, Center: Image 2, a beach, Right: Horizontal mask applied.</p>
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/multiresolution_output.png" title="mountains" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Beach with mountains in the horizon.</p>
+
+Interesting about this photo is how the coarse blend of the mountains looks like a shadow of the mountains on the water.
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/sparks.png" title="sparks" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/bubbles.png" title="bubbles" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/mask.png" title="mask" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Left: Image 1, sparks, Center: Image 2, bubbles, Right: circular mask applied.</p>
+
+For this image, I wanted to create a slight variation of the blending approach, by only going for a 2-band blending and excluding the last Laplacian layer of the sparks image to remove the blue background.
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/multiresolution_output.png" title="electric bubbles" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Electric bubble.</p>
