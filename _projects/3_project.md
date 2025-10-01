@@ -577,7 +577,7 @@ In short, we simply needed to add all layers of the stack together for the final
 Here are some more fun examples I developed.
 
 
-#### Beach with mountains on the horizon
+##### Beach with mountains on the horizon
 
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/mountains.png" title="mountains" class="img-fluid rounded z-depth-1" %}</div>
@@ -593,7 +593,7 @@ Here are some more fun examples I developed.
 
 Interesting about this photo is how the coarse blend of the mountains looks like a shadow of the mountains on the water.
 
-#### Electric bubble
+##### Electric bubble
 
 
 <div class="row">
