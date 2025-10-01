@@ -402,13 +402,13 @@ To get a better impression of how the hybrid image technique works, I analyzed t
         {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_gray.png" title="cyprian gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_fft.png"" title="cyprian fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_fft.png" title="cyprian fft" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_gray.png"" title="cyprian high pass gray" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_gray.png" title="cyprian high pass gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_fft.png"" title="cyprian high pass fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_fft.png" title="cyprian high pass fft" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -417,13 +417,13 @@ To get a better impression of how the hybrid image technique works, I analyzed t
         {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_gray.png" title="flo gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_fft.png"" title="flo fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_fft.png" title="flo fft" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_gray.png"" title="flo low pass gray" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_gray.png" title="flo low pass gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_fft.png"" title="flo low pass fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_fft.png" title="flo low pass fft" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -432,7 +432,7 @@ To get a better impression of how the hybrid image technique works, I analyzed t
         {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/combined_gray.png" title="combined gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/combined_fft.png"" title="combined fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/combined_fft.png" title="combined fft" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
