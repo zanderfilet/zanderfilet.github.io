@@ -225,7 +225,7 @@ To smooth our binarized edge image, I first applied a 2D Gaussian filter (outer 
 </div>
 <p class="text-center">Left: Gradient magnitude composite, Right: Binarized edge image.</p>
 
-The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = (G * D_x) * I$$, where $G$ is the Gaussian filter and $I$ is the image.
+The order of convolutions can also be changed, by first convolving the Gaussian blur with the finite difference filters to produce a Derivative of Gaussian filter (DoG). This works because convolution is a linear and shift-invariant operation, so the order of convolution can be rearranged. In other words, $$(G * D_x) * I = G * (D_x * I)$$, where $G$ is the Gaussian filter and $I$ is the image.
 
 <div class="row">
     <div class="col-sm">
