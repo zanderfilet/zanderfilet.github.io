@@ -460,43 +460,75 @@ Below are more examples of hybrid images using the same methodology.
 
 #### 2.3 Gaussian and Laplacian Stacks
 
-**Task:** Implement and visualize stacks for blending.
+In the next step of this project, I worked on blending two images seamlessly by applying a smoothed mask to lower frequencies and an unsmoothed mask to the highest frequencies. The effect of this approach is that coarser features, whose changes are easily noticeable to the eye, must be gradually blended, while finer features should be more aggressively blended to avoid perceiving blur artifacts. To accomplish this, I first isolated $N$ distinct frequency ranges for each of the two images being blended. This can be achieved by repeatedly applying Gaussian blur starting from each original image to form a Gaussian stack, then subtracting each $(i+1)$-th layer from the $i$-th layer to form a Laplacian stack. The last element in the Laplacian stack is simply the residual Gaussian blur. With these frequency decompositions, we can apply increasingly smoothed masks as we move toward coarser features.
 
-**Code:**
-```python
-# Paste your stack code here
-```
+##### Naive Apprach
 
-**Results:**
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/gaussian_stack.jpg" title="Gaussian Stack" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/laplacian_stack.jpg" title="Laplacian Stack" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/apple.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/orange.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
 </div>
+<p class="text-center">Reference images we want to blend.</p>
 
-**Discussion:**
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/apple.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/orange.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Reference images we want to blend.</p>
+
+As we can see, simply "blending" both images by applying a uniform unsmoothed mask to both images produces an immediately identifiable stitch.
+
+##### Gaussian Stack
+
+Below is the Gaussian stack for both images, $N = 4$.
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/gaussian_level_0.png" title="apple level 0" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/gaussian_level_0.png" title="orange level 0" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 0.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/gaussian_level_1.png" title="apple level 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/gaussian_level_1.png" title="orange level 1" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 1.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/gaussian_level_2.png" title="apple level 2" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/gaussian_level_2.png" title="orange level 2" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 2.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/gaussian_level_3.png" title="apple level 3" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/gaussian_level_3.png" title="orange level 3" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 3.</p>
+
+##### Laplacian Stack
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/laplacian_level_0.png" title="apple level 0" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/laplacian_level_0.png" title="orange level 0" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 0.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/laplacian_level_1.png" title="apple level 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/laplacian_level_1.png" title="orange level 1" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 1.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/laplacian_level_2.png" title="apple level 2" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/laplacian_level_2.png" title="orange level 2" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 2.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Apple_Stacks/laplacian_level_3.png" title="apple level 3" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/stacks_Orange_Stacks/laplacian_level_3.png" title="orange level 3" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 3.</p>
+
+Now, onto multiresolution blending.
 
 ---
 
 #### 2.4 Multiresolution Blending (Oraple)
 
-**Task:** Blend images with mask, show results for apple/orange and custom blends.
-
-**Code:**
-```python
-# Paste your blending code here
-```
-
-**Results:**
-<div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/oraple.jpg" title="Oraple" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/custom_blend1.jpg" title="Custom Blend 1" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/custom_blend2.jpg" title="Custom Blend 2" class="img-fluid rounded z-depth-1" %}</div>
-</div>
-
-**Discussion:**
-
----
-
-### Reflection: What I Learned
-
-_Summarize the most important thing you learned from this project._
