@@ -530,5 +530,49 @@ Now, onto multiresolution blending.
 
 ---
 
-#### 2.4 Multiresolution Blending (Oraple)
+#### 2.4 Multiresolution Blending
+
+Applying the above vertical mask with increasing smoothing as we increase levels in the stack, we get the following level-by-level masked apples, oranges (using the inverse of the filter) and combined images.
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image1_level_0.png" title="apple level 0" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image2_level_0.png" title="orange level 0" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/blended_level_0.png" title="blended level 0" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 0.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image1_level_1.png" title="apple level 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image2_level_1.png" title="orange level 1" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/blended_level_1.png" title="blended level 1" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 1.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image1_level_2.png" title="apple level 2" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image2_level_2.png" title="orange level 2" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/blended_level_2.png" title="blended level 2" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 2.</p>
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image1_level_3.png" title="apple level 3" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/image2_level_3.png" title="orange level 3" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/multires_blend_levels_4/blended_level_3.png" title="blended level 3" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">Level 3.</p>
+
+The key insight that makes multiresolution blending work at this stage is the additive property of Laplacian stacks. When we construct a Laplacian stack by computing differences between consecutive Gaussian levels, we create a frequency decomposition where each level contains a specific band of spatial frequencies. The crucial property is that the sum of all Laplacian levels perfectly reconstructs the original image.
+
+If we have Gaussian levels $G_0, G_1, G_2, \ldots, G_N$ and Laplacian levels $L_0, L_1, L_2, \ldots, L_N$ where $L_i = G_i - G_{i+1}$ for $i = 0, 1, \ldots, N-1$ and $L_N = G_N$
+
+Then $\sum_{i=0}^{N} L_i = L_0 + L_1 + L_2 + \cdots + L_N = G_0$
+
+In short, we simply needed to add all layers of the stack together for the final blend:
+
+<div class="row">
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/multiresolution_output.png" title="apple level 3" class="img-fluid rounded z-depth-1" %}</div>
+</div>
+<p class="text-center">The Oraple.</p>
+
+##### More Examples
+
+Here are some more fun examples I developed.
 
