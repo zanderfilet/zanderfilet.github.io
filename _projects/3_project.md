@@ -171,7 +171,7 @@ For example, I first applied the $$D_x$$ and $$D_y$$ filters to the reference im
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_dy.png" title="dy" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Original, $D_x$, $D_y$.</p>
+<p class="text-center">Left: Original, Center: $D_x$, Right: $D_y$.</p>
 
 Next, I computed the gradient magnitude between the two convolutions, as seen in the first image below, and manually set a threshold to isolate edges from noise.
 
@@ -183,7 +183,7 @@ Next, I computed the gradient magnitude between the two convolutions, as seen in
         {% include figure.liquid path="assets/img/cs180/p2/12/cameraman_edges.png" title="Binarized edges" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Gradient magnitude image, binarized edge image.</p>
+<p class="text-center">Left: Gradient magnitude image, Right: Binarized edge image.</p>
 
 I selected a pixel intensity threshold of 0.3 to classify edges. My reasoning was that I preferred to preserve edge continuity, even if it meant retaining some noise in the image. This threshold struck a healthy balance, eliminating most of the noise in the grass while almost perfectly maintaining the outline of the subject.
 
@@ -325,7 +325,7 @@ Some more examples from my personal photo library:
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_shenoy.png" title="shenoy sharp" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: High frequencies, Center: Original Shenoy Right: Sharpened Shenoy ($factor=3$).</p>
+<p class="text-center">Left: High frequencies, Center: Original Shenoy, Right: Sharpened Shenoy ($factor=3$).</p>
 
 Note: The last image is sharpened using a higher strength factor than the previous examples. While this increases the prominence of edges, it also amplifies high-frequency noise present in the image, producing a grainier appearance. This demonstrates that too much sharpening can enhance unwanted details and artifacts. For a final demonstration of the sharpening process, I intentionally blurred an image, then applied the unsharp mask to assess how well the original can be reconstructed. Results are below:
 
@@ -340,7 +340,7 @@ Note: The last image is sharpened using a higher strength factor than the previo
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_blurred_shake.png" title="shake resharpened" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: Original, Center: Manually blurred input $(sn=8, \sigma=1)$ Shenoy Right: Sharpened blur ($factor=2.5$).</p>
+<p class="text-center">Left: Original, Center: Manually blurred input $(N=8, \sigma=1)$, Right: Sharpened blur ($factor=2.5$).</p>
 
 ---
 
@@ -405,10 +405,10 @@ To get a better impression of how the hybrid image technique works, I analyzed t
         {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_fft.png" title="cyprian fft" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_gray.png" title="cyprian high pass gray" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/highpass_sigma2.8_gray.png" title="cyprian high pass gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_fft.png" title="cyprian high pass fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/highpass_sigma2.8_fft.png" title="cyprian high pass fft" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -420,10 +420,10 @@ To get a better impression of how the hybrid image technique works, I analyzed t
         {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_fft.png" title="flo fft" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_gray.png" title="flo low pass gray" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/lowpass_sigma2.8_gray.png" title="flo low pass gray" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_fft.png" title="flo low pass fft" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/lowpass_sigma2.8_fft.png" title="flo low pass fft" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 
@@ -471,10 +471,10 @@ In the next step of this project, I worked on blending two images seamlessly by 
 <p class="text-center">Reference images we want to blend.</p>
 
 <div class="row">
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/apple.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
-    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/orange.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/mask.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
+    <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_apple_orange_Vertical_Blend/naive_blend.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
 </div>
-<p class="text-center">Reference images we want to blend.</p>
+<p class="text-center">Left: Mask applied, Right: naive blend.</p>
 
 As we can see, simply "blending" both images by applying a uniform unsmoothed mask to both images produces an immediately identifiable stitch.
 
@@ -576,6 +576,9 @@ In short, we simply needed to add all layers of the stack together for the final
 
 Here are some more fun examples I developed.
 
+
+#### Beach with mountains on the horizon
+
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/mountains.png" title="mountains" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/beach.png" title="beach" class="img-fluid rounded z-depth-1" %}</div>
@@ -586,9 +589,12 @@ Here are some more fun examples I developed.
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_mountains_beach_Horizontal_Blend/multiresolution_output.png" title="mountains" class="img-fluid rounded z-depth-1" %}</div>
 </div>
-<p class="text-center">Beach with mountains in the horizon.</p>
+<p class="text-center">Beach with mountains on the horizon.</p>
 
 Interesting about this photo is how the coarse blend of the mountains looks like a shadow of the mountains on the water.
+
+#### Electric bubble
+
 
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/sparks.png" title="sparks" class="img-fluid rounded z-depth-1" %}</div>
