@@ -297,7 +297,7 @@ Next, I implemented an image sharpening technique, by creating an unsharp mask f
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_taj.png" title="Taj sharp" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: High-frequences, Center: Original Taj Mahal Right: Sharpened Taj Mahal (factor=1.2).</p>
+<p class="text-center">Left: High frequencies, Center: Original Taj Mahal Right: Sharpened Taj Mahal ($factor=1.2$).</p>
 
 Some more examples from my personal photo library:
 
@@ -312,7 +312,7 @@ Some more examples from my personal photo library:
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_lv_billboard.png" title="lv_billboard sharp" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: High-frequences, Center: Original Las Vegas sign Right: Sharpened Las Vegas sign (factor=1.2).</p>
+<p class="text-center">Left: High frequencies, Center: Original Las Vegas sign Right: Sharpened Las Vegas sign ($factor=1.2$).</p>
 
 <div class="row">
     <div class="col-sm">
@@ -325,7 +325,7 @@ Some more examples from my personal photo library:
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_shenoy.png" title="shenoy sharp" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: High-frequences, Center: Original Shenoy Right: Sharpened Shenoy (factor=3).</p>
+<p class="text-center">Left: High frequencies, Center: Original Shenoy Right: Sharpened Shenoy ($factor=3$).</p>
 
 Note: The last image is sharpened using a higher strength factor than the previous examples. While this increases the prominence of edges, it also amplifies high-frequency noise present in the image, producing a grainier appearance. This demonstrates that too much sharpening can enhance unwanted details and artifacts. For a final demonstration of the sharpening process, I intentionally blurred an image, then applied the unsharp mask to assess how well the original can be reconstructed. Results are below:
 
@@ -340,7 +340,7 @@ Note: The last image is sharpened using a higher strength factor than the previo
         {% include figure.liquid path="assets/img/cs180/p2/21/sharpened_blurred_shake.png" title="shake resharpened" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Left: Original, Center: Manually blurred input $(sn=8, \sigma=1)$ Shenoy Right: Sharpened blur (factor=2.5).</p>
+<p class="text-center">Left: Original, Center: Manually blurred input $(sn=8, \sigma=1)$ Shenoy Right: Sharpened blur ($factor=2.5$).</p>
 
 ---
 
@@ -372,14 +372,14 @@ Then, I manually selected the alignment reference points on each image.
 </div>
 <p class="text-center">Left: Cyprian, aligned, Right: Florentin, aligned.</p>
 
-After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2.8,~\sigma_{high~pass} = 2.8}$.
+After some trial and error, I selected cutoff frequencies $\sigma_{low~pass} = 2.8,~\sigma_{high~pass} = 2.8$.
 
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/filtered_highpass_high_cyp.png" title="cyprian high pass" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/filtered_highpass_low_flo.png" title="flo low pass" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p2/22/results_high_cyp_low_flo/filtered_lowpass_low_flo.png" title="flo low pass" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">Left: Cyprian, high pass, Right: Florentin low pass.</p>
@@ -393,38 +393,68 @@ Final overlayed output:
 </div>
 <p class="text-center">Cyprentin.</p>
 
-
 ##### Fourier Transform Analysis
 
 To get a better impression of how the hybrid image technique works, I analyzed the frequency content of each stage in the process. The Fourier transform visualizations show which spatial frequencies are present in each image. Low frequencies appear in the center, while high frequencies extend outward. This analysis reveals how our Gaussian and impulse filters isolate different frequency components.
 
-Originals and their FFT 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_gray.png" title="cyprian gray" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_fft.png"" title="cyprian fft" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_gray.png"" title="cyprian high pass gray" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im1_highpass_sigma2.8_fft.png"" title="cyprian high pass fft" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
 
-**Additional Examples:**
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_gray.png" title="flo gray" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_fft.png"" title="flo fft" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_gray.png"" title="flo low pass gray" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/im2_lowpass_sigma2.8_fft.png"" title="flo low pass fft" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/combined_gray.png" title="combined gray" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p2/22/fft_FFT_Analysis/combined_fft.png"" title="combined fft" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+In the original images, the full spectrum of frequencies can be observed. When we apply the high-pass filter to Cyprian's image, the FFT shows that low frequencies (near the center) are attenuated, leaving only the high-frequency edge information that defines facial features and fine details. Conversely, the low-pass filter applied to Florentin's image preserves the central low frequencies while removing the high-frequency details. The combined hybrid image's FFT shows how the two filtered images produce complementary frequency ranges.
+
+##### Additional Examples
+
+Below are more examples of hybrid images using the same methodology.
 
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/aligned_high_jj.png" title="JJ source" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/aligned_low_khan.png" title="Khan source" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_high_jj_low_khan/final_hybrid.png" title="JJ-Khan hybrid" class="img-fluid rounded z-depth-1" %}</div>
 </div>
-<p class="text-center">JJ and Khan hybrid: High frequencies from JJ, low frequencies from Khan ($$\sigma_1=8, \sigma_2=2.5, \alpha=0.9$$).</p>
+<p class="text-center">JJ and Khan hybrid: High frequencies from JJ, low frequencies from Khan ($\sigma_1=8, \sigma_2=2.5, \alpha=0.9$).</p>
 
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/aligned_nutmeg.png" title="Cat source" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/aligned_DerekPicture.png" title="Derek source" class="img-fluid rounded z-depth-1" %}</div>
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/results_nutmeg_DerekPicture/final_hybrid.png" title="Cat-Derek hybrid" class="img-fluid rounded z-depth-1" %}</div>
 </div>
-<p class="text-center">Cat and Professor hybrid: High frequencies from cat (Nutmeg), low frequencies from Professor Derek ($$\sigma_1=8, \sigma_2=1.5, \alpha=0.9$$).</p>
-
-The hybrid images demonstrate varying degrees of success. The first example (Cyprian/Florence) works particularly well due to similar facial structure and lighting conditions. The second example shows how different head poses can create interesting morphing effects. The third example illustrates the challenge of combining subjects with very different scales and orientations, though it still produces an intriguing result when viewed at different distances.
-
----
-
-#### Bells & Whistles: Color Hybrid Exploration
-
-**Task:** Explore color in hybrid images, justify choices.
-
-**Results & Discussion:**
+<p class="text-center">Nutmeg and Derek hybrid: High frequencies from cat (Nutmeg), low frequencies from Derek ($\sigma_1=8, \sigma_2=1.5, \alpha=0.9$).</p>
 
 ---
 
