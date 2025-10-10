@@ -12,7 +12,6 @@ img: assets/img/cs180/p3/cover.png
 
 In this project, I explored image warping and mosaicking techniques using homographies and interpolation methods. The project involved computing homographies to align images, warping images with nearest-neighbor and bilinear interpolation, and creating seamless mosaics by blending multiple images.
 
-
 ---
 
 ### Part A:
@@ -274,7 +273,7 @@ For Nearest Neighbor Interpolation, I rounded the transformed coordinates to the
 
 For Bilinear Interpolation, I computed the output pixel values as a weighted average of the four nearest neighbors in the input image. The weights were determined based on the fractional distances of the transformed coordinates from these neighbors. This approach provided smoother results, especially for continuous gradients.
 
-To confirm that the function works, I decided to rectify the third image in the desk set, by attempting to horizontally align the poster on the left side of the image.
+To confirm that the function works, I decided to rectify the third image in the room set, by attempting to horizontally align the poster on the left side of the image.
 
 <div class="row">
     <div class="col-sm">
@@ -319,7 +318,7 @@ As can be seen, the poster alignment worked, using both warping functions. Next,
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p3/campanile_set/r2.JPG" title="original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p3/campanile_set/r2.jpeg" title="original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p3/campanile_set/nn24.jpg" title="nn" class="img-fluid rounded z-depth-1" %}
