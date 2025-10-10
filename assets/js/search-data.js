@@ -431,9 +431,9 @@ ninja.data = [{
           description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_project/";
-            },},{id: "projects-project-4",
-          title: 'project 4',
-          description: "another without an image",
+            },},{id: "projects-auto-stitching-and-photo-mosaics",
+          title: '(Auto)stitching and Photo Mosaics',
+          description: "Cyprian Zander",
           section: "Projects",handler: () => {
               window.location.href = "/projects/4_project/";
             },},{id: "projects-project-5",
