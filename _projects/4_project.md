@@ -14,9 +14,9 @@ In this project, I explored image warping and mosaicking techniques using homogr
 
 ---
 
-### Part A:
+### Part A
 
-#### A.1 The Pictures
+##### A.1 The Pictures
 
 I took these three sets of images, trying my best to rotate around the focal point of the camera lens to minimize distortions in the overlapping image segments.
 
@@ -58,7 +58,7 @@ I took these three sets of images, trying my best to rotate around the focal poi
         {% include figure.liquid path="assets/img/cs180/p3/balcony_set/r6.JPG" title="3" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">Room set.</p>
+<p class="text-center">Balcony set.</p>
 
 ###### A.2.0 Establishing Point Correspondences
 
@@ -126,7 +126,7 @@ $$
 
 Rewriting these equations creates a linear system $A h = b$, where $h$ contains the 8 free parameters of $H$ we're trying to fit to ($h_{8} = 1$). Finally, the solution vector $h$ is reshaped into the 3×3 homography matrix.
 
-My $computeH(im1_pts, im2_pts)$ implementation:
+My $computeH(im1_{pts}, im2_{pts})$ implementation:
 
 ```
 def computeH(im1_pts, im2_pts):
@@ -153,40 +153,42 @@ def computeH(im1_pts, im2_pts):
 For example, for the first and second campanile set photos, our linear equations are:
 
 $$
-292.25 = 621.50h_{11} + 67.00h_{12} + 1h_{13} - 181633.38h_{31} - 19580.75h_{32} \\
-53.75 = 621.50h_{21} + 67.00h_{22} + 1h_{23} - 33405.62h_{31} - 3601.25h_{32} \\
-364.50 = 719.00h_{11} + 645.00h_{12} + 1h_{13} - 262075.50h_{31} - 235102.50h_{32} \\
-609.75 = 719.00h_{21} + 645.00h_{22} + 1h_{23} - 438410.25h_{31} - 393288.75h_{32} \\
-230.00 = 567.75h_{11} + 379.50h_{12} + 1h_{13} - 130582.50h_{31} - 87285.00h_{32} \\
-352.75 = 567.75h_{21} + 379.50h_{22} + 1h_{23} - 200273.81h_{31} - 133868.62h_{32} \\
-265.25 = 606.25h_{11} + 336.00h_{12} + 1h_{13} - 160807.81h_{31} - 89124.00h_{32} \\
-312.25 = 606.25h_{21} + 336.00h_{22} + 1h_{23} - 189301.56h_{31} - 104916.00h_{32} \\
-240.00 = 588.00h_{11} + 744.00h_{12} + 1h_{13} - 141120.00h_{31} - 178560.00h_{32} \\
-710.50 = 588.00h_{21} + 744.00h_{22} + 1h_{23} - 417774.00h_{31} - 528612.00h_{32} \\
-216.50 = 566.00h_{11} + 826.50h_{12} + 1h_{13} - 122539.00h_{31} - 178937.25h_{32} \\
-792.75 = 566.00h_{21} + 826.50h_{22} + 1h_{23} - 448696.50h_{31} - 655207.88h_{32} \\
-38.50 = 393.00h_{11} + 414.75h_{12} + 1h_{13} - 15130.50h_{31} - 15967.88h_{32} \\
-374.50 = 393.00h_{21} + 414.75h_{22} + 1h_{23} - 147178.50h_{31} - 155323.88h_{32} \\
-238.50 = 589.50h_{11} + 937.25h_{12} + 1h_{13} - 140595.75h_{31} - 223534.12h_{32} \\
-898.75 = 589.50h_{21} + 937.25h_{22} + 1h_{23} - 529813.12h_{31} - 842353.44h_{32} \\
-314.00 = 675.25h_{11} + 865.00h_{12} + 1h_{13} - 212028.50h_{31} - 271610.00h_{32} \\
-816.25 = 675.25h_{21} + 865.00h_{22} + 1h_{23} - 551172.81h_{31} - 706056.25h_{32} \\
-320.75 = 685.25h_{11} + 982.75h_{12} + 1h_{13} - 219793.94h_{31} - 315217.06h_{32} \\
-922.25 = 685.25h_{21} + 982.75h_{22} + 1h_{23} - 631971.81h_{31} - 906341.19h_{32} \\
-208.25 = 537.50h_{11} + 90.50h_{12} + 1h_{13} - 111934.38h_{31} - 18846.62h_{32} \\
-55.25 = 537.50h_{21} + 90.50h_{22} + 1h_{23} - 29696.88h_{31} - 5000.12h_{32} \\
-223.25 = 557.75h_{11} + 265.25h_{12} + 1h_{13} - 124517.69h_{31} - 59217.06h_{32} \\
-235.00 = 557.75h_{21} + 265.25h_{22} + 1h_{23} - 131071.25h_{31} - 62333.75h_{32} \\
-38.50 = 398.00h_{11} + 614.75h_{12} + 1h_{13} - 15323.00h_{31} - 23667.88h_{32} \\
-591.25 = 398.00h_{21} + 614.75h_{22} + 1h_{23} - 235317.50h_{31} - 363470.94h_{32} \\
-50.25 = 409.75h_{11} + 740.75h_{12} + 1h_{13} - 20589.94h_{31} - 37222.69h_{32} \\
-727.25 = 409.75h_{21} + 740.75h_{22} + 1h_{23} - 297990.69h_{31} - 538710.44h_{32} \\
-75.50 = 436.75h_{11} + 876.75h_{12} + 1h_{13} - 32974.62h_{31} - 66194.62h_{32} \\
-865.00 = 436.75h_{21} + 876.75h_{22} + 1h_{23} - 377788.75h_{31} - 758388.75h_{32} \\
-305.75 = 651.75h_{11} + 579.50h_{12} + 1h_{13} - 199272.56h_{31} - 177182.12h_{32} \\
-551.00 = 651.75h_{21} + 579.50h_{22} + 1h_{23} - 359114.25h_{31} - 319304.50h_{32} \\
-270.25 = 601.25h_{11} + 141.00h_{12} + 1h_{13} - 162487.81h_{31} - 38105.25h_{32} \\
-122.50 = 601.25h_{21} + 141.00h_{22} + 1h_{23} - 73653.12h_{31} - 17272.50h_{32}
+\begin{align}
+292.25 &= 621.50h_{11} + 67.00h_{12} + 1h_{13} - 181633.38h_{31} - 19580.75h_{32} \\
+53.75 &= 621.50h_{21} + 67.00h_{22} + 1h_{23} - 33405.62h_{31} - 3601.25h_{32} \\
+364.50 &= 719.00h_{11} + 645.00h_{12} + 1h_{13} - 262075.50h_{31} - 235102.50h_{32} \\
+609.75 &= 719.00h_{21} + 645.00h_{22} + 1h_{23} - 438410.25h_{31} - 393288.75h_{32} \\
+230.00 &= 567.75h_{11} + 379.50h_{12} + 1h_{13} - 130582.50h_{31} - 87285.00h_{32} \\
+352.75 &= 567.75h_{21} + 379.50h_{22} + 1h_{23} - 200273.81h_{31} - 133868.62h_{32} \\
+265.25 &= 606.25h_{11} + 336.00h_{12} + 1h_{13} - 160807.81h_{31} - 89124.00h_{32} \\
+312.25 &= 606.25h_{21} + 336.00h_{22} + 1h_{23} - 189301.56h_{31} - 104916.00h_{32} \\
+240.00 &= 588.00h_{11} + 744.00h_{12} + 1h_{13} - 141120.00h_{31} - 178560.00h_{32} \\
+710.50 &= 588.00h_{21} + 744.00h_{22} + 1h_{23} - 417774.00h_{31} - 528612.00h_{32} \\
+216.50 &= 566.00h_{11} + 826.50h_{12} + 1h_{13} - 122539.00h_{31} - 178937.25h_{32} \\
+792.75 &= 566.00h_{21} + 826.50h_{22} + 1h_{23} - 448696.50h_{31} - 655207.88h_{32} \\
+38.50 &= 393.00h_{11} + 414.75h_{12} + 1h_{13} - 15130.50h_{31} - 15967.88h_{32} \\
+374.50 &= 393.00h_{21} + 414.75h_{22} + 1h_{23} - 147178.50h_{31} - 155323.88h_{32} \\
+238.50 &= 589.50h_{11} + 937.25h_{12} + 1h_{13} - 140595.75h_{31} - 223534.12h_{32} \\
+898.75 &= 589.50h_{21} + 937.25h_{22} + 1h_{23} - 529813.12h_{31} - 842353.44h_{32} \\
+314.00 &= 675.25h_{11} + 865.00h_{12} + 1h_{13} - 212028.50h_{31} - 271610.00h_{32} \\
+816.25 &= 675.25h_{21} + 865.00h_{22} + 1h_{23} - 551172.81h_{31} - 706056.25h_{32} \\
+320.75 &= 685.25h_{11} + 982.75h_{12} + 1h_{13} - 219793.94h_{31} - 315217.06h_{32} \\
+922.25 &= 685.25h_{21} + 982.75h_{22} + 1h_{23} - 631971.81h_{31} - 906341.19h_{32} \\
+208.25 &= 537.50h_{11} + 90.50h_{12} + 1h_{13} - 111934.38h_{31} - 18846.62h_{32} \\
+55.25 &= 537.50h_{21} + 90.50h_{22} + 1h_{23} - 29696.88h_{31} - 5000.12h_{32} \\
+223.25 &= 557.75h_{11} + 265.25h_{12} + 1h_{13} - 124517.69h_{31} - 59217.06h_{32} \\
+235.00 &= 557.75h_{21} + 265.25h_{22} + 1h_{23} - 131071.25h_{31} - 62333.75h_{32} \\
+38.50 &= 398.00h_{11} + 614.75h_{12} + 1h_{13} - 15323.00h_{31} - 23667.88h_{32} \\
+591.25 &= 398.00h_{21} + 614.75h_{22} + 1h_{23} - 235317.50h_{31} - 363470.94h_{32} \\
+50.25 &= 409.75h_{11} + 740.75h_{12} + 1h_{13} - 20589.94h_{31} - 37222.69h_{32} \\
+727.25 &= 409.75h_{21} + 740.75h_{22} + 1h_{23} - 297990.69h_{31} - 538710.44h_{32} \\
+75.50 &= 436.75h_{11} + 876.75h_{12} + 1h_{13} - 32974.62h_{31} - 66194.62h_{32} \\
+865.00 &= 436.75h_{21} + 876.75h_{22} + 1h_{23} - 377788.75h_{31} - 758388.75h_{32} \\
+305.75 &= 651.75h_{11} + 579.50h_{12} + 1h_{13} - 199272.56h_{31} - 177182.12h_{32} \\
+551.00 &= 651.75h_{21} + 579.50h_{22} + 1h_{23} - 359114.25h_{31} - 319304.50h_{32} \\
+270.25 &= 601.25h_{11} + 141.00h_{12} + 1h_{13} - 162487.81h_{31} - 38105.25h_{32} \\
+122.50 &= 601.25h_{21} + 141.00h_{22} + 1h_{23} - 73653.12h_{31} - 17272.50h_{32}
+\end{align}
 $$
 
 The recovered homography matrix is:
@@ -307,3 +309,173 @@ where $I_i(x, y)$ is the intensity of the $i$-th image at pixel $(x, y)$, and $M
     </div>
 </div>
 <p class="text-center">Campanile Mosaic.</p>
+
+### Part B
+
+In the second part of this project I implemented an automatic image stitching code using Multi-Scale Oriented Patches (MOPS) features, following the methodology discussed in the paper ["Multi-Image Matching using Multi-Scale Oriented Patches"](https://cal-cs180.github.io/fa25/hw/proj3/Papers/MOPS.pdf) by Brown et al.. This approach auomates the point selection process I manually performed in part A. The updated methodology consists of new steps including Harris corner detection to identify interest points, feature descriptor extraction to compare image patches, feature matching, and RANSAC homography estimation for robust alignment.
+
+##### B.1 Harris Corner Detection
+
+Harris corner detection identifies interest points by analyzing local image gradients. The algorithm computes image derivatives ($I_x$,  $I_y$), then constructs the matrix:
+
+$$M = \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}$$
+
+The Harris function is given by $R = \det(M) - k \cdot \text{trace}(M)^2$, where $k$ is a manually defined constant for the sensitivity to corners. Corners correspond to regions where both eigenvalues of $M$ are large, indicating significant gradients in multiple directions.
+
+For Adaptive Non-Maximal Suppression (ANMS), I computed the suppression radius $r_i$ (the minimum distance around a corner point where no stronger corners exist) for each corner $i$ as:
+
+$$r_i = \min_{j} \|x_i - x_j\|_2 \text{ such that } f_j > c_{\text{robust}} \cdot f_i$$
+
+where $f_i$ is the Harris strength and $c_{\text{robust}}$ is the robustness parameter, ensuring only significantly stronger corners can suppress weaker ones.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r2.jpeg" title="original" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r1_harris_corners.png" title="harris" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r1_anms_corners.png" title="anms" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Original, Center: Harris detected edges, Right: ANMS edges ($N=1000$, $c_{robust}=0.9$).</p>
+
+##### B.2 Feature Descriptor Extraction
+
+For each detected corner, I extracted a MOPS descriptor to characterize the local region. This works by first applying a Gaussian blur ($\sigma = 1.0$) to reduce noise, then extracting a large 40×40 pixel area around each point. This area is downsampled to 8×8 pixels using area interpolation to achieve scale invariance.
+
+The descriptor vector is formed by flattening the 8x8 area and normalizing. This normalization ensures invariance to illumination differences between images. Corners with little texture around it (low standard deviation) are skipped for better descriptors. Below is a small subset of some features extracted from the above image's corners.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/features/feature_0.png" title="f0" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/features/feature_1.png" title="f1" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/features/feature_2.png" title="f2" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/features/feature_3.png" title="f3" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/features/feature_4.png" title="f4" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Low-frequency descriptors.</p>
+
+##### B.3 Feature Matching
+
+In the next step, I worked on matching features between images. Feature matching works with nearest neighbor search using Lowe's ratio test. Specifically, I computed the squared Euclidean distance matrix between all descriptor pairs:
+
+$$M_{ij} = \|\mathbf{d}_1^{(i)} - \mathbf{d}_2^{(j)}\|_2^2 = \|\mathbf{d}_1^{(i)}\|^2 + \|\mathbf{d}_2^{(j)}\|^2 - 2\mathbf{d}_1^{(i)} \cdot \mathbf{d}_2^{(j)}$$
+
+For each descriptor in the first image, I identified the two nearest neighbors in the second image. A match is accepted only if the ratio of the closest to second-closest distance satisfies:
+
+$$\frac{d_1}{d_2} < \text{ratio threshold}$$
+
+where $d_1$ and $d_2$ are the distances to the first and second nearest neighbors, respectively. This ratio test is intended to filter out ambiguous matches. In my implementation, I used a ratio threshold of 0.8, which provides a good balance between match quantity and quality.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r1_features_match.png" title="r1 features match" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r2_features_match.png" title="r2 features match" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r3_features_match.png" title="r3 features match" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Red points correspond to matches between image 1 and 2, green points correspond to matches between image 2 and 3.</p>
+
+Even with the ratio test, some erroneous correspondences inevitably remain due to repetitive textures, lighting variations, or similar-looking features across different spatial locations.
+
+##### B.4 RANSAC for Robust Homography
+
+To handle outliers in feature matches, I used RANSAC (Random Sample Consensus) for robust homography estimation. The algorithm iteratively samples small sets of correspondences to find the model that best explains the correspondences while being robust to potential outliers.
+
+The RANSAC procedure works by first randomly sampling four point correspondences. The selection of points is then used to compute the homography using the DLT method from part A. Next, all points are projected from image 1 to image 2 using $H$, evaluating the projection error.
+
+$$\text{error}_i = \|H \mathbf{p}_{1i} - \mathbf{p}_{2i}\|_2$$
+
+From this, I counted the number of points for which the error lies below a threshold. Finally, I kept the homography with the largest consensus set.
+
+Below are some comparisons between my manually generated mosaics and the automatically generated ones.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/campanile_set/campanile_mosaic.jpg" title="campanile manual" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_campanile_set.png" title="campanile automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Campanile manual, Right: Campanile automatic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/balcony_set/balcony_mosaic.jpg" title="balcony manual" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_balcony_set.png" title="balcony automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Balcony manual, Right: balcony automatic.</p>
+
+The automatic stitching sometimes produces lower quality results compared to manual stitching since automatic feature detection may miss optimal correspondence points that humans would naturally select. Also, the limited number of detected features can lead to less robust homography estimation, and the RANSAC algorithm's random sampling may not always find the globally optimal solution within the iteration limit.
+
+Here are some more new images using the feature matching and autostitching approach I implemented. 
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_lawrence_set_2.png" title="lawrence automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Lawrence Hall of Science Mosaic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_lawrence_set.png" title="berkeley automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Grizzly Peak Vista Point Mosaic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_ck_set.png" title="ck automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Clark Kerr Mosaic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_cypdom_set.png" title="cypdom automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Rohan & Carter Mosaic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_path_set.png" title="path automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Rohan & Carter Mosaic.</p>
+
+Finally, some fun explorations of the same subject moving into multiple stitched frames:
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_multishenoy_set.png" title="multishenoy automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Multishenoy 1 Mosaic.</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p3/mosaics/mosaic_multishenoy_set_2.png" title="multishenoy 2 automatic" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Multishenoy 2 Mosaic.</p>
