@@ -330,7 +330,7 @@ where $f_i$ is the Harris strength and $c_{\text{robust}}$ is the robustness par
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r2.jpeg" title="original" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r1.jpeg" title="original" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p3/partb_walkthrough/r1_harris_corners.png" title="harris" class="img-fluid rounded z-depth-1" %}
