@@ -418,27 +418,27 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "projects-becoming-friends-with-your-camera",
           title: 'Becoming Friends with Your Camera',
-          description: "Cyprian Zander",
+          description: "September 2, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
             },},{id: "projects-colorizing-prokudin-gorskii",
           title: 'Colorizing Prokudin-Gorskii',
-          description: "Cyprian Zander",
+          description: "September 12, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
             },},{id: "projects-fun-with-filters-and-frequencies",
           title: 'Fun with Filters and Frequencies',
-          description: "Cyprian Zander",
+          description: "September 26, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_project/";
             },},{id: "projects-auto-stitching-and-photo-mosaics",
           title: '(Auto)stitching and Photo Mosaics',
-          description: "Cyprian Zander",
+          description: "October 17, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/4_project/";
-            },},{id: "projects-project-5",
-          title: 'project 5',
-          description: "a project with a background image",
+            },},{id: "projects-neural-radiance-fields",
+          title: 'Neural Radiance Fields',
+          description: "November 14, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/5_project/";
             },},{id: "projects-project-6",
