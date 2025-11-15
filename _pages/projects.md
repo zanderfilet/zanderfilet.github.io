@@ -2,7 +2,7 @@
 layout: page
 title: projects
 permalink: /projects/
-description: For now just 180 projects
+description: 
 nav: true
 nav_order: 2
 display_categories: [CS180]

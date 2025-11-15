@@ -5,7 +5,7 @@ description: October 17, 2025
 importance: 1
 category: CS180
 related_publications: false
-img: assets/img/cs180/p3/cover.png
+img: assets/img/cs180/p3/cover.jpg
 ---
 
 ### Overview
