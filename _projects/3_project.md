@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Fun with Filters and Frequencies
-description: Cyprian Zander
+description: September 26, 2025
 importance: 1
 category: CS180
 related_publications: false

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Becoming Friends with Your Camera
-description: Cyprian Zander
+description: September 2, 2025
 importance: 1
 category: CS180
 related_publications: false

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: (Auto)stitching and Photo Mosaics
-description: Cyprian Zander
+description: October 17, 2025
 importance: 1
 category: CS180
 related_publications: false

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Colorizing Prokudin-Gorskii
-description: Cyprian Zander
+description: September 12, 2025
 importance: 1
 category: CS180
 related_publications: false
