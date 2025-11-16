@@ -188,14 +188,58 @@ Below is the viser visualization for an initial Lego wheel loader dataset.
 
 ##### 2.4: Neural Radiance Field
 
-##### 2.3: Putting the Dataloading All Together
+With the data preparation ready, I implemented the NeRF MLP to predict RGB color and volume density for 3D points. As an extension to the 2D neural field, this network takes both the 3D world coordinates and viewing directions as inputs, since color in a radiance field intuitively depends on view angle. I applied positional encoding to both inputs, using higher frequency for positions ($L=10$) to capture fine geometric details and a lower frequency for directions ($L=4$), which ensured that viewing-dependent effects would be smoother. 
 
+In this extended model, the architecture consists of eight fully connected layers with ReLU activations. After the first 4 layers, I concatenated the original positionally-encoded coordinates back into the network as a skip connection, which helps retain spatial information. The network then splits into two components. First, there's a density head that outputs a single positive value (using ReLU), and a color head that takes the intermediate features concatenated with the encoded viewing direction to produce RGB values (with Sigmoid activations to bound outputs to [0,1]).
 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/mlp_nerf.png" title="NeRF Architecture" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
 
-##### 2.4: Neural Radiance Field
-
+For my own dataset's model, I scaled the layers to 512.
 
 ##### 2.5: Volume Rendering
 
+With the NeRF network predicting colors and densities at sampled 3D points, I implemented volume rendering to composite these samples into final pixel colors. The continuous volume rendering equation is:
+
+$$C(\mathbf{r}) = \int_{t_n}^{t_f} T(t) \cdot \sigma(\mathbf{r}(t)) \cdot \mathbf{c}(\mathbf{r}(t), \mathbf{d}) \, dt$$
+
+where $T(t) = \exp\left(-\int_{t_n}^{t} \sigma(\mathbf{r}(s)) \, ds\right)$ is the probability of a ray reaching point $t$ without hitting anything. For discrete samples, this becomes:
+
+$$C(\mathbf{r}) = \sum_{i=1}^{N} T_i \cdot \alpha_i \cdot \mathbf{c}_i$$
+
+where $\alpha_i = 1 - \exp(-\sigma_i \delta_i)$ is the probability of the ray terminating at sample $i$ with step size $\delta_i$, and $T_i = \prod_{j=1}^{i-1}(1 - \alpha_j)$ is the accumulated transmittance. I implemented this using `torch.cumprod` to compute the transmittance efficiently, allowing gradients to flow back through the rendering process during training.
+
+I trained the NeRF using Adam optimizer with learning rate $0.0005$, sampling 10,000 rays per batch for 5000 iterations. The model was optimized using MSE loss between rendered and ground truth colors, reaching over 23 PSNR on the validation set.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/digger_psnr.png" title="Wheel Loader Dataset MSR & PSNR" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+Below is the novel view synthesis on the wheel loader dataset.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/first.gif" title="Wheel Loader iter=100" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/early.gif" title="Wheel Loader iter=300" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/1000.gif" title="Wheel Loader iter=1000" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/3000.gif" title="Wheel Loader iter=3000" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/final.gif" title="Wheel Loader iter=5000" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">iterations: 100, 300, 1000, 3000, 5000.</p>
 
 ##### 2.6: Training with your own data
+
