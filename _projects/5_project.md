@@ -18,7 +18,7 @@ In this project, I built a pipeline for rendering Neural Radiance Fields from im
 
 ##### 0.1: Calibrating Your Camera
 
-I calibrated my camera using ArUco markers, capturing 37 images from different angles. For each image, I collected the marker's 4x4 corner The `calibrateCamera` function in OpenCV helped compute the camera intrinsics and distortion coefficients, which would be useful for my own object dataset curation later.
+I calibrated my camera using ArUco markers, capturing 37 images from different angles. For each image, I collected the marker's 4x4 corner. The `calibrateCamera` function in OpenCV helped compute the camera intrinsics and distortion coefficients, which would be useful for my own object dataset curation later.
 
 Below are some sample images.
 
@@ -110,20 +110,20 @@ Below is a grid displaying fully trained results from tweaking positional encodi
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq2_width64_final.jpg" title="freq 2, width 64" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq2_width64_800.jpg" title="freq 2, width 64" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq2_width256_final.jpg" title="freq 2, width 256" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq2_width256_800.jpg" title="freq 2, width 256" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">max_freq=2; left, width=64, right width=256</p>
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq10_width64_final.jpg" title="freq 10, width 64" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq10_width64_800.jpg" title="freq 10, width 64" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq10_width256_final.jpg" title="freq 10, width 256" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p4/part1/animal_freq10_width256_800.jpg" title="freq 10, width 256" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">max_freq=10; left, width=64, right width=256</p>
