@@ -150,12 +150,46 @@ With a low frequency encoding, the reconstruction loses high-frequency details a
 
 ##### 2.1: Create Rays from Cameras
 
+Moving into 3D space, to render novel views with NeRF, I first needed to generate camera rays for each pixel. I implemented three transformation functions to convert pixel coordinates into 3D rays in world space.
 
+First, I implemented `transform(c2w, x_c)` to convert points from camera coordinates to world coordinates using the camera-to-world matrix from part 0.1. Given a transformation defined by rotation $R$ and translation $t$, this applies $\mathbf{x}_w = R \mathbf{x}_c + t$. I verified correctness by checking that $\mathbf{x} = \text{transform}(c2w^{-1}, \text{transform}(c2w, \mathbf{x}))$ always holds.
+
+Next, I implemented `pixel_to_camera(K, uv, s)` to convert pixel coordinates back to camera space. Given the intrinsic matrix:
+
+$$
+K = \begin{bmatrix} f_x & 0 & o_x \\\\ 0 & f_y & o_y \\\\ 0 & 0 & 1 \end{bmatrix}
+$$
+
+and the projection equation $s \mathbf{u} = K \mathbf{x}_c$, I inverted this to get:
+
+$$
+\mathbf{x}_c = \begin{bmatrix} \frac{s(u - o_x)}{f_x} \\\\ \frac{s(v - o_y)}{f_y} \\\\ s \end{bmatrix}
+$$
+
+Finally, I combined these in `pixel_to_ray(K, c2w, uv)` to generate rays. For each pixel, the ray origin is simply the camera position $\mathbf{o} = c2w[:3, 3]$. To find the ray direction, I computed a point at depth $s=1$ in camera space, transformed it to world space, and normalized the direction: $\mathbf{d} = \frac{\mathbf{x}_w - \mathbf{o}}{\|\mathbf{x}_w - \mathbf{o}\|}$.
 
 ##### 2.2: Sampling
 
+For training, I had to sample rays from multiple images and discretize each ray into 3D sample points. I implemented `sample_rays(images, Ks, c2ws, N)` to select $N$ rays from all pixels across all images. I created a pixel grid for all images, added 0.5 to convert from image coordinates to pixel centers, then globally sampled ray indices. For each sampled ray, I computed its origin and direction using the corresponding camera's intrinsics and extrinsics, along with the ground truth pixel color.
+
+To sample points along each ray, I implemented `sample_points_along_rays(origins, directions, near, far, n_samples)` which discretizes rays between near and far planes (set to 2.0 and 6.0 for the lego scene). Rather than using uniform samples $t = \text{linspace}(\text{near}, \text{far}, n)$ which may cause overfitting, I introduced stratified sampling with perturbations during training. I divided the ray into equal intervals, then randomly sampled within each interval to ensure every location along the ray gets visited during training. The final 3D coordinates are computed as $\mathbf{p} = \mathbf{o} + t \mathbf{d}$ for each sample distance $t$.
 
 ##### 2.3: Putting the Dataloading All Together
+
+Finally, I combined the ray generation and sampling functions into a `RaysData` class that precomputes all rays for the training images. The dataloader stores pixel coordinates, calculates ray origins and directions for every pixel across all images, and maps them to their corresponding ground truth colors. During training, the `sample_rays(N)` method randomly selects $N$ rays along with their colors for each batch. I verified the implementation using viser to visualize the camera frustums, sampled rays, and 3D sample points, confirming that rays correctly travel from camera positions and sample points lie along the expected ray paths.
+
+Below is the viser visualization for an initial Lego wheel loader dataset.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/render.png" title="Wheel Loader Viser" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+##### 2.4: Neural Radiance Field
+
+##### 2.3: Putting the Dataloading All Together
+
 
 
 ##### 2.4: Neural Radiance Field
