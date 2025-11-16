@@ -144,7 +144,7 @@ With a low frequency encoding, the reconstruction loses high-frequency details a
         {% include figure.liquid path="assets/img/cs180/p4/part1/nerf_900.jpg" title="900 iters" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">It's NeRF or Nothing.</p>
+<p class="text-center">Original, 0 iterations, 100 iterations, 900 iterations. It's NeRF or Nothing.</p>
 
 ### Part 2: Fit a Neural Radiance Field from Multi-view Images
 
@@ -152,7 +152,7 @@ With a low frequency encoding, the reconstruction loses high-frequency details a
 
 Moving into 3D space, to render novel views with NeRF, I first needed to generate camera rays for each pixel. I implemented three transformation functions to convert pixel coordinates into 3D rays in world space.
 
-First, I implemented `transform(c2w, x_c)` to convert points from camera coordinates to world coordinates using the camera-to-world matrix from part 0.1. Given a transformation defined by rotation $R$ and translation $t$, this applies $\mathbf{x}_w = R \mathbf{x}_c + t$. I verified correctness by checking that $\mathbf{x} = \text{transform}(c2w^{-1}, \text{transform}(c2w, \mathbf{x}))$ always holds.
+First, I implemented `transform(c2w, x_c)` to convert points from camera coordinates to world coordinates using the camera-to-world matrix from part 0.1. Given a transformation defined by rotation $R$ and translation $t$, this applies $\mathbf{x}_w = R \mathbf{x}_c + t$.
 
 Next, I implemented `pixel_to_camera(K, uv, s)` to convert pixel coordinates back to camera space. Given the intrinsic matrix:
 
