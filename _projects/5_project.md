@@ -243,3 +243,35 @@ Below is the novel view synthesis on the wheel loader dataset.
 
 ##### 2.6: Training with your own data
 
+For my own dataset, I trained a NeRF on the LEGO dataset collected earlier. To accommodate the real-world capture conditions, I adjusted several hyperparameters from the synthetic lego dataset. Most importantly, I tuned the near and far sampling bounds to 0.02 and 0.5 based on the actual distance between my camera and the object. I also increased the number of samples per ray from 32 to 64 for higher quality reconstruction, which increased training time but significantly improved detail.
+
+To generate novel views, I implemented a circular camera trajectory that orbits around the object while maintaining focus on the scene center using a `look_at_origin` function. I generated 60 frames by rotating the camera position around the object and rendering each view through the trained NeRF. The training process showed steady improvement in reconstruction quality, with the PSNR increasing as the network learned to represent the 3D structure and appearance.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/lego_psnr.png" title="Lego Dataset MSR & PSNR" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+
+Below is the novel view synthesis on the wheel loader dataset.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/orbit_iter_1000.gif" title="Lego iter=1000" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/orbit_iter_5000.gif" title="Lego iter=5000" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/orbit_final.gif" title="Lego iter=10000" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">iterations: 1000, 5000, 10000.</p>
+
+###### Bonus: Another NeRF render!
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p4/part2/lefufu.gif" title="!" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
