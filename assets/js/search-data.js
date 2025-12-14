@@ -443,7 +443,7 @@ ninja.data = [{
               window.location.href = "/projects/5_project/";
             },},{id: "projects-fun-with-diffusion-models",
           title: 'Fun With Diffusion Models',
-          description: "November 14, 2025",
+          description: "December 12, 2025",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_project/";
             },},{id: "projects-project-7",
