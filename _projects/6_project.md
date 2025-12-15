@@ -117,20 +117,20 @@ In this example, it seems that the model struggled with the combination of green
 
 ##### 1.1: Implementing the Forward Process
 
-In the first stage of implementing the diffusion model, I defined the forward diffusion process. The forward diffusion process gradually transforms a clean image \(x_0\) into noise by scaling the signal and adding Gaussian noise. At timestep \(t\), the image \(x_t\) is sampled by
+In the first stage of implementing the diffusion model, I defined the forward diffusion process. The forward diffusion process gradually transforms a clean image $x_0$ into noise by scaling the signal and adding Gaussian noise. At timestep $t$, the image $x_t$ is sampled by
 
-\[
+$$
 q(x_t \mid x_0) = \mathcal{N}\!\left(x_t;\ \sqrt{\bar{\alpha}_t}\, x_0,\ (1 - \bar{\alpha}_t)\mathbf{I}\right),
-\]
+$$
 
 which is equivalent to
 
-\[
+$$
 x_t = \sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1 - \bar{\alpha}_t}\, \varepsilon,
 \quad \varepsilon \sim \mathcal{N}(0, \mathbf{I}).
-\]
+$$
 
-where \(\bar{\alpha}_t\) is the cumulative product of the noise schedule up to timestep \(t\). As \(t\) increases, \(\bar{\alpha}_t \to 0\), and \(x_t\) becomes dominated by Gaussian noise.
+where $\bar{\alpha}_t$ is the cumulative product of the noise schedule up to timestep $t$. As $t$ increases, $\bar{\alpha}_t \to 0$, and $x_t$ becomes dominated by Gaussian noise.
 
 You can see my code for my implementation of the ```forward(im, t)````. 
 
@@ -144,14 +144,14 @@ Here is the Berkeley campanile at noise level [250, 500, 750].
         {% include figure.liquid path="assets/img/cs180/p5/part1/b.png" title="500" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part2/c.png" title="750" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/c2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center"></p>
+<p class="text-center">$t=750$</p>
 
 ##### 1.2: Classical Denoising
 
-To evaluate how difficult diffusion denoising is, I first applied a classical Gaussian blur to noisy images at timesteps \(t \in \{250, 500, 750\}\). Gaussian filtering smooths high-frequency noise but cannot recover lost structure, so as the noise level increases, the images become increasingly blurred without meaningful reconstruction.
+To evaluate how difficult diffusion denoising is, I first applied a classical Gaussian blur to noisy images at timesteps $t \in \{250, 500, 750\}$. Gaussian filtering smooths high-frequency noise but cannot recover lost structure, so as the noise level increases, the images become increasingly blurred without meaningful reconstruction.
 
 <div class="row">
     <div class="col-sm">
@@ -171,7 +171,7 @@ To evaluate how difficult diffusion denoising is, I first applied a classical Ga
         {% include figure.liquid path="assets/img/cs180/p5/part1/b2.png" title="c500d" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=500)</p>
+<p class="text-center">$t=500$</p>
 
 <div class="row">
     <div class="col-sm">
@@ -181,7 +181,7 @@ To evaluate how difficult diffusion denoising is, I first applied a classical Ga
         {% include figure.liquid path="assets/img/cs180/p5/part1/c2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=750)</p>
+<p class="text-center">$t=750$</p>
 
 ##### 1.3: One-Step Denoising
 
@@ -191,7 +191,7 @@ Estimate the noise in the new noisy image, by passing it through stage_1.unet
 Remove the noise from the noisy image to obtain an estimate of the original image.
 Visualize the original image, the noisy image, and the estimate of the original image
 
-In this step, I used `stage_1.unet`, a pretrained, timestep-conditioned UNet, to estimate the Gaussian noise present in a noisy image. Given a noisy image \(x_t\), the timestep \(t\), and a text prompt embedding, the UNet predicts the noise \(\varepsilon\) that was added during the forward process, which I then appropriately scaled and removed to recover an estimate of the original image \(x_0\).
+In this step, I used `stage_1.unet`, a pretrained, timestep-conditioned UNet, to estimate the Gaussian noise present in a noisy image. Given a noisy image $x_t$, the timestep $t$, and a text prompt embedding, the UNet predicts the noise $\varepsilon$ that was added during the forward process, which I then appropriately scaled and removed to recover an estimate of the original image $x_0$.
 
 Below is the original campanile, the noisy campanile at variable $t$ noise levels, and the corresponding one-step denoised campanile using the model.
 
@@ -206,7 +206,7 @@ Below is the original campanile, the noisy campanile at variable $t$ noise level
         {% include figure.liquid path="assets/img/cs180/p5/part1/a3.png" title="c250c" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=250)</p>
+<p class="text-center">$t=250$</p>
 
 <div class="row">
     <div class="col-sm">
@@ -219,7 +219,7 @@ Below is the original campanile, the noisy campanile at variable $t$ noise level
         {% include figure.liquid path="assets/img/cs180/p5/part1/b3.png" title="c500c" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=500)</p>
+<p class="text-center">$t=500$</p>
 
 <div class="row">
     <div class="col-sm">
@@ -232,27 +232,27 @@ Below is the original campanile, the noisy campanile at variable $t$ noise level
         {% include figure.liquid path="assets/img/cs180/p5/part1/c3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=750)</p>
+<p class="text-center">$t=750$</p>
 
 As we can see, the denoising UNet is much better at projecting the image onto the natural image manifold, but the sharpness worsens with more noise.
 
 ##### 1.4: Iterative Denoising
 
-One-step denoising tries to recover a clean image \(x_0\) directly from a noisy sample \(x_t\), but diffusion models are designed to denoise gradually by repeatedly stepping from a noisier timestep to a less noisy one. Because running all \(T=1000\) steps is expensive, I used a strided schedule and denoised only at those timesteps.
+One-step denoising tries to recover a clean image $x_0$ directly from a noisy sample $x_t$, but diffusion models are designed to denoise gradually by repeatedly stepping from a noisier timestep to a less noisy one. Because running all $T=1000$ steps is expensive, I used a strided schedule and denoised only at those timesteps.
 
-At each iteration we have an image \(x_t\) at timestep \(t=\texttt{strided\_timesteps}[i]\), and we want to move to a less noisy timestep \(t'=\texttt{strided\_timesteps}[i+1]\). I first used the pretrained `stage_1.unet` (conditioned on \(t\) and the text embedding) to estimate the noise \(\hat{\varepsilon}\), then form an estimate of the clean image:
+At each iteration we have an image $x_t$ at timestep $t=\texttt{strided\_timesteps}[i]$, and we want to move to a less noisy timestep $t'=\texttt{strided\_timesteps}[i+1]$. I first used the pretrained `stage_1.unet` (conditioned on $t$ and the text embedding) to estimate the noise $\hat{\varepsilon}$, then form an estimate of the clean image:
 
-\[
+$$
 \hat{x}_0 \;=\; \frac{x_t - \sqrt{1-\bar{\alpha}_t}\,\hat{\varepsilon}}{\sqrt{\bar{\alpha}_t}}.
-\]
+$$
 
-Then we update toward \(t'\) using the iterative denoising rule, which is like linearly interpolating between signal and noise:
+Then we update toward $t'$ using the iterative denoising rule, which is like linearly interpolating between signal and noise:
 
-\[
+$$
 x_{t'} \;=\; \sqrt{\bar{\alpha}_{t'}}\,\hat{x}_0 \;+\; \sqrt{1-\bar{\alpha}_{t'}}\,\hat{\varepsilon} \;+\; \sigma(t,t')\,z,
-\]
+$$
 
-where \(z\sim \mathcal{N}(0,\mathbf{I})\). Repeating this update over the timesteps gradually projects the sample onto the natural image manifold, producing a much cleaner result than single-step denoising or Gaussian blur.
+where $z\sim \mathcal{N}(0,\mathbf{I})$. Repeating this update over the timesteps gradually projects the sample onto the natural image manifold, producing a much cleaner result than single-step denoising or Gaussian blur.
 
 <div class="row">
     <div class="col-sm">
@@ -271,7 +271,7 @@ where \(z\sim \mathcal{N}(0,\mathbf{I})\). Repeating this update over the timest
         {% include figure.liquid path="assets/img/cs180/p5/part1/90.png" title="t90" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">From left to right, iterative denoising at timesteps \(690, 540, 390, 240, 90)</p>
+<p class="text-center">From left to right, iterative denoising at timesteps $690, 540, 390, 240, 90$</p>
 
 <div class="row">
     <div class="col-sm">
@@ -295,19 +295,19 @@ Diffusion models can also be used as generative models by starting from pure Gau
 
 <div class="row">
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part1/d1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/e1.png" title="c750" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part1/d2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/e2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part1/d3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/e3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part1/d4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/e4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
     </div>
     <div class="col-sm">
-        {% include figure.liquid path="assets/img/cs180/p5/part1/d5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid path="assets/img/cs180/p5/part1/e5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <p class="text-center">Five generated samples from the prompt 'a high quality photo'</p>
@@ -316,37 +316,271 @@ Diffusion models can also be used as generative models by starting from pure Gau
 
 The unguided samples from the previous section look a bit nonsensical because, without strong conditioning, the denoising trajectory is only loosely constrained. Many different images are plausible under the model’s prior, and small errors in the predicted noise compound across iterative steps. With a weak prompt like the previous one (or effectively “null” conditioning), the model often drifts toward generic textures or unstable compositions instead of a coherent natural image.
 
-Classifier-Free Guidance fixes this by explicitly steering the denoiser using both an unconditional and a conditional noise prediction. At each timestep I ran the UNet twice to get \(\varepsilon_u\), a noise estimate with the unconditional prompt `""` and \(\varepsilon_c\), noise estimate with the conditional prompt embedding. Then, these can be combined using the CFG rule:
+Classifier-Free Guidance fixes this by explicitly steering the denoiser using both an unconditional and a conditional noise prediction. At each timestep I ran the UNet twice to get $\varepsilon_u$, a noise estimate with the unconditional prompt `""` and $\varepsilon_c$, noise estimate with the conditional prompt embedding. Then, these can be combined using the CFG rule:
 
-\[
+$$
 \varepsilon \;=\; \varepsilon_u + \gamma(\varepsilon_c - \varepsilon_u),
-\]
+$$
 
-where \(\gamma\) controls guidance strength. When \(\gamma > 1\), the update amplifies the direction that moves the sample toward satisfying the text condition, producing more coherent images at the cost of reduced diversity. This guided \(\varepsilon\) is then used in the same iterative denoising update as before.
+where $\gamma$ controls guidance strength. When $\gamma > 1$, the update amplifies the direction that moves the sample toward satisfying the text condition, producing more coherent images at the cost of reduced diversity. This guided $\varepsilon$ is then used in the same iterative denoising update as before.
 
 
-
-Implement the iterative_denoise_cfg function
-Show 5 images of "a high quality photo" with a CFG scale of gamma = 7. Now this prompt becomes a condition (but fairly weak) to generate conditional noise! You will use your customized prompts as stronger conditions in part 1.7 - part 1.9.
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/g1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/g2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/g3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/g4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/g5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Five samples with the prompt 'a high quality photo' and a CFG scale of $\gamma = 7$</p>
 
 ##### 1.7: Image-to-image Translation
 
-Edits of the Campanile image, using the given prompt at noise levels [1, 3, 5, 7, 10, 20] with the conditional text prompt "a high quality photo"
-Edits of 2 of your own test images, using the same procedure.
+Building on iterative denoising, we can extend diffusion beyond just generation by initializing the process from a real image instead of noise. SDEdit works by adding noise to a real input image and then running the diffusion denoising process to “project” it back onto the natural image manifold. The amount of noise controls edit strength: smaller `i_start` (less noise) preserves the original structure, while larger `i_start` (more noise) forces the model to hallucinate more missing information, producing larger, more creative changes. Using CFG from this point onward keeps the denoising trajectory stable and improves perceptual quality during this projection.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/i7.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
+Here are some samples from my personal photo library.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/j6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/k6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
 
 ##### 1.7.1: Editing Hand-Drawn and Web Images
+
+If SDEdit can project real photos back onto the image manifold, it should be even more effective when starting from inputs that lie far off that manifold. This same projection effect is even more dramatic for sketches or non-photorealistic web images. Starting from a drawing or stylized input, adding noise and denoising encourages the model to replace ambiguous strokes with fitting textures, lighting, and geometry, effectively “lifting” the input onto the natural image manifold. As `i_start` increases, the output becomes less faithful to the original lines and more like a realistic reinterpretation.
 
 1 image from the web of your choice, edited using the above method for noise levels [1, 3, 5, 7, 10, 20] (and whatever additional noise levels you want)
 2 hand drawn images, edited using the above method for noise levels [1, 3, 5, 7, 10, 20] (and whatever additional noise levels you want)
 
+I decided to demonstrate this approach with an image downloaded from the web.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/f7.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
+The same can be done for hand-drawn images. Here are two examples.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/h7.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/m6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
 ##### 1.7.2: Inpainting
+
+Inpainting uses the denoising loop while constraining part of the image to remain fixed. At every timestep, after producing a new sample, we overwrite the pixels outside the masked region with the original image content (with the correct noise level for that timestep), while leaving the masked region free to evolve. This forces the model to generate new content only inside the hole, while maintaining consistency with the unmasked context.
 
 A properly implemented inpaint function
 The Campanile inpainted (feel free to use your own mask)
 2 of your own images edited (come up with your own mask)
 look at the results from this paper for inspiration
 
+Below is the campanile inpainted with a different upper floor.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/l0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/l1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/l2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Original, mask, inpainted</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/n0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/n1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/n2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Original, mask, inpainted</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/o0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/o1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/o2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Original, mask, inpainted</p>
+
 ##### 1.7.3: Text-Conditional Image-to-image Translation
+
+Text-conditional image-to-image translation is SDEdit plus language guidance. We start from a noised version of the input image, then denoise with CFG using a chosen prompt so the projection is biased toward satisfying the text. As `i_start` increases, the prompt influence becomes stronger because more of the final image must be hallucinated, producing outputs that both resemble the original image and increasingly reflect the text condition.
+
+
 
 Edits of the Campanile, using the given prompt at noise levels [1, 3, 5, 7, 10, 20]
 Edits of 2 of your own test images, using the same procedure
