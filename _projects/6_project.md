@@ -19,25 +19,23 @@ In this project, I implemented generative models for image synthesis and denoisi
 ##### Part 0: Setup
 
 To start out, I tested some prompt embeddings on the pretrained DeepFloyd model. The following text prompts were used to generate text embeddings:
-
-```text
-a high quality picture
-an oil painting of a snowy mountain village
-a photo of the amalfi coast
-a photo of a man
-a photo of a hipster barista
-a photo of a dog
-an oil painting of people around a campfire
-an oil painting of an old man
-a lithograph of waterfalls
-a lithograph of a skull
-a man wearing a hat
-a high quality photo
-a rocket ship
-a pencil
-long-stemmed flowers strewn on the hood of a classic Porsche
-a family of four sitting in a ski lift
-a green tennis court```.
+- a high quality picture
+- an oil painting of a snowy mountain village
+- a photo of the amalfi coast
+- a photo of a man
+- a photo of a hipster barista
+- a photo of a dog
+- an oil painting of people around a campfire
+- an oil painting of an old man
+- a lithograph of waterfalls
+- a lithograph of a skull
+- a man wearing a hat
+- a high quality photo
+- a rocket ship
+- a pencil
+- long-stemmed flowers strewn on the hood of a classic Porsche
+- a family of four sitting in a ski lift
+- a green tennis court
 
 The last three prompts are my own.
 
