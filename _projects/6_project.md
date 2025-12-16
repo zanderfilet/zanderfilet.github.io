@@ -580,45 +580,344 @@ Below is the campanile inpainted with a different upper floor.
 
 Text-conditional image-to-image translation is SDEdit plus language guidance. We start from a noised version of the input image, then denoise with CFG using a chosen prompt so the projection is biased toward satisfying the text. As `i_start` increases, the prompt influence becomes stronger because more of the final image must be hallucinated, producing outputs that both resemble the original image and increasingly reflect the text condition.
 
+Here are three examples of the campanile and two of my own test images with the prompt 'long-stemmed flowers strewn on the hood of a classic Porsche' applied.
 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/p6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
 
-Edits of the Campanile, using the given prompt at noise levels [1, 3, 5, 7, 10, 20]
-Edits of 2 of your own test images, using the same procedure
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/q6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/r6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
 
 ##### 1.8: Visual Anagrams
 
-Correctly implemented visual_anagrams function
-2 illusions of your choice that change appearance when you flip it upside down (feel free to take inspirations from this page).
+Once CFG-based sampling is stable, we can couple two different prompts by enforcing a symmetry constraint during denoising to create flip-dependent optical illusions.  
+At each timestep \(t\), we predict noise in two “views” of the same latent: we run the UNet with prompt \(p_1\) on \(x_t\) to get \(\varepsilon_1\), and we run the UNet with prompt \(p_2\) on the flipped image \(f(x_t)\) to get \(\varepsilon_2\). We then flip \(\varepsilon_2\) back and average the two noise estimates to form a single composite \(\varepsilon\), and use that \(\varepsilon\) in the reverse diffusion update; this forces the sample to satisfy \(p_1\) in the upright orientation and \(p_2\) when flipped.
+
+You can see my corresponding code repository for my implementation of the visual_anagrams function. Below are two interesting illusions I created with this methodology.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/s0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/s1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Prompts: 'An Oil Painting of an Old Man' and 'An Oil Painting of People around a Campfire'</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/t0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/t1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Prompts: 'An Oil Painting of an Old Man' and 'An Oil Painting of People around a Campfire'</p>
 
 ##### 1.9: Hybrid Images
+
+Instead of coupling prompts by a geometric transform, we can couple them in the frequency domain by assigning one prompt to low frequencies and the other to high frequencies.  
+At each timestep \(t\), I computed two CFG noise estimates from the same \(x_t\):
+\[
+\varepsilon_1 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_1)),\qquad
+\varepsilon_2 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_2)).
+\]
+We then combine them using the provided factorized rule:
+\[
+\varepsilon \;=\; f_{\text{lowpass}}(\varepsilon_1)\;+\;f_{\text{highpass}}(\varepsilon_2),
+\]
+where \(f_{\text{lowpass}}\) is a Gaussian blur (e.g., kernel 33, \(\sigma=2\)) and \(f_{\text{highpass}}(x)=x-f_{\text{lowpass}}(x)\). Using this composite \(\varepsilon\) in the denoising step makes the final image read as prompt \(p_1\) at a distance (low-frequency structure) but reveal prompt \(p_2\) up close (high-frequency detail).
+
+You can see my corresponding code repository for my implementation of the visual_anagrams function. Below are two prompt combinations I created with this methodology.
 
 Correctly implemented make_hybrids function
 2 hybrid images of your choosing (feel free to take inspirations from this page).
 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/u0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Prompts: "a photo of a man" and "a photo of the amalfi coast"</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part1/u1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Prompts: "a lithograph of waterfalls" and "a man wearing a hat"</p>
+
 ### Part B: Flow Matching from Scratch
+
+Before implementing and training the UNet, the goal is to rely on primary references for the core building blocks (convolutions, transposed convolutions, pooling, datasets, dataloaders, and training loops) so the architecture and optimization behavior are understood. 
 
 ##### Part 1: Training a Single-Step Denoising UNet
 
 ##### 1.1: Implementing the UNet
 
+I implemented the denoiser as a UNet composed of downsampling and upsampling blocks with skip connections. The encoder progressively reduced spatial resolution while increasing channel depth to capture global context, and the decoder reconstructed the image while concatenating encoder features to preserve fine details. Operations such as convolutions, pooling, transposed convolutions, and channel-wise concatenation allowed the network to remain expressive without losing spatial information.
+
 ##### 1.2: Using the UNet to Train a Denoiser
 
-A visualization of the noising process using 
+Once the architecture is defined, I trained it as a regression model that maps a noisy input back to a clean target with an L2 objective.  
+I generated training pairs \((x_{\text{noisy}}, x)\) on the fly by sampling a noise level \(\sigma\) and forming \(x_{\text{noisy}} = x + \sigma\varepsilon\) (with normalized \(x\) and \(\varepsilon \sim \mathcal{N}(0, I)\)); the UNet \(f_\theta\) is optimized to minimize \(\|f_\theta(x_{\text{noisy}}) - x\|_2^2\), which encourages accurate pixel-level reconstruction.
+
+Below is a visualization of the noising process.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a0.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a1.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a2.png" title="c750" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/a6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">From left to right: $\sigma \in \{0.0,\; 0.2,\; 0.4,\; 0.5,\; 0.6,\; 0.8,\; 1.0\}$</p>
+
 
 ##### 1.2.1: Training
 
-A training loss curve plot every few iterations during the whole training process of 
-.
-Sample results on the test set with noise level 0.5 after the first and the 5-th epoch (staff solution takes ~3 minutes for 5 epochs on a Colab T4 GPU).
+I trained the denoiser on the MNIST training set for five epochs using shuffled batches. Noise was applied dynamically when each batch was fetched so that the model saw different corruptions of the same images across epochs, improving generalization. I used a UNet with hidden dimension \(D=128\) and optimized it with Adam at a learning rate of \(10^{-4}\), monitoring the training loss and visualizing denoised results on the test set after the first and fifth epochs.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Training loss curve</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <<div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">After first epoch. Left: Original, Center: Noisy, Right: Denoised$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <<div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/e5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">After fifth epoch. Left: Original, Center: Noisy, Right: Denoised$</p>
 
 ##### 1.2.2: Out-of-Distribution Testing
 
-Sample results on the test set with out-of-distribution noise levels after the model is trained. Keep the same image and vary 
+After training, I evaluated the denoiser on noise levels that were not seen during training. By keeping the same test images fixed and varying the noise magnitude, I observed how reconstruction quality degraded as the input distribution shifted. This experiment highlighted the limits of generalization for a denoiser trained on a restricted noise range.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Noisy, $\sigma = 0.0, Right: Denoised$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Noisy, $\sigma = 0.2, Right: Denoised$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Noisy, $\sigma = 0.5, Right: Denoised$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d7.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d8.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Noisy, $\sigma = 0.8, Right: Denoised$</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d9.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/d10.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Left: Noisy, $\sigma = 1.0, Right: Denoised$</p>
 
 ##### 1.2.3: Denoising Pure Noise
 
-A training loss curve plot every few iterations during the whole training process that denoises pure noise.
-Sample results on pure noise after the first and the 5-th epoch.
+To explore denoising as a generative process, I trained the UNet to map pure Gaussian noise directly to clean-looking images. In this setup, the model learned to output the MSE-optimal prediction under extreme uncertainty. The resulting samples resembled blurred or averaged digit-like structures, reflecting the fact that minimizing MSE encourages predictions toward the mean of the training distribution rather than diverse, sharp samples.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Training loss curve</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/b6.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Samples after first epoch</p>
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c4.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+        <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/c5.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Samples after fifth epoch</p>
+
+
 A brief description of the patterns observed in the generated outputs and explanations for why they may exist.
 
 ##### Part 2: Training a Flow Matching Model
@@ -627,15 +926,17 @@ A brief description of the patterns observed in the generated outputs and explan
 
 ##### 2.2: Training the UNet
 
+A training loss curve plot for the time-conditioned UNet over the whole training process.
+
+
 ##### 2.3: Sampling from the UNet
 
-A training loss curve plot for the time-conditioned UNet over the whole training process.
+Sampling results from the time-conditioned UNet for 1, 5, and 10 epochs. The results should not be perfect, but reasonably good.
 
 
 ##### 2.4: Adding Class-Conditioning to UNet
 
-Sampling results from the time-conditioned UNet for 1, 5, and 10 epochs. The results should not be perfect, but reasonably good.
-(Optional for CS180, required for CS280A) Check the Bells and Whistles if you want to make it better!
+
 
 ##### 2.5: Training the UNet
 
