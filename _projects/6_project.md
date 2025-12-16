@@ -922,27 +922,74 @@ A brief description of the patterns observed in the generated outputs and explan
 
 ##### Part 2: Training a Flow Matching Model
 
+
 ##### 2.1: Adding Time Conditioning to UNet
+
+After observing that one-step denoising and pure-noise denoising collapse to averaged prototypes, I needed a model that could explicitly represent how images evolve over multiple denoising steps.  
+
+I modified the UNet to be explicitly conditioned on the scalar timestep \(t\) so the model could learn different behaviors at different noise levels. I implemented FCBlocks (small fully-connected networks built from `nn.Linear`) to embed a normalized \(t \in [0,1]\), then used those embeddings to modulate intermediate decoder activations (e.g., scaling the unflatten and upsampling features) so the network could represent a time-dependent flow field rather than a single fixed denoising function.
 
 ##### 2.2: Training the UNet
 
-A training loss curve plot for the time-conditioned UNet over the whole training process.
+With time conditioning in place, training naturally shifted from predicting clean images to predicting how samples should move over time. I trained the time-conditioned UNet to predict the flow from an interpolated noisy sample \(x_t\) back toward the clean image \(x\) at a randomly sampled timestep \(t\). For each batch, I sampled MNIST digits, sampled random \(t\), constructed \(x_t\) on-the-fly, and optimized the UNet with Adam (initial lr \(=10^{-2}\)) to regress the target flow, while using an exponential learning-rate decay scheduler stepped once per epoch. I tracked the training loss across the full run and plotted it as the primary training signal.
 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/f0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<p class="text-center">Training loss curve</p>
 
 ##### 2.3: Sampling from the UNet
 
-Sampling results from the time-conditioned UNet for 1, 5, and 10 epochs. The results should not be perfect, but reasonably good.
+Once the model learned a time-dependent flow field, I could use it to iteratively transform noise into data. I generated samples by starting from pure Gaussian noise and repeatedly applying the learned flow predictions across timesteps, gradually pushing samples toward the data manifold. I visualized outputs after 1, 5, and 10 epochs to show how training improved sample quality over time, with later checkpoints producing clearer and more structured digits.
 
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/f1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/f1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/f1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
 
 ##### 2.4: Adding Class-Conditioning to UNet
 
-
+While time conditioning enabled generation, it did not provide control over which digit was generated. I extended the UNet to accept a class-conditioning vector \(c\) (a one-hot encoding for digits 0–9) by adding additional FCBlocks and combining class and time embeddings to modulate decoder activations. To retain unconditional generation capability, I applied conditioning dropout by zeroing the class vector 10% of the time, enabling classifier-free guidance during sampling.
 
 ##### 2.5: Training the UNet
 
-A training loss curve plot for the class-conditioned UNet over the whole training process.
+With both time and class conditioning integrated, training followed the same flow-matching objective with additional supervision. I trained the class-conditioned UNet using the same procedure as the time-only model, except that each batch included a class vector that was randomly dropped with fixed probability. I recorded and plotted the training loss across epochs to analyze convergence and stability relative to the time-only model.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/g0.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
 
 ##### 2.6: Sampling from the UNet
 
-Sampling results from the class-conditioned UNet for 1, 5, and 10 epochs. Class-conditioning lets us converge faster, hence why we only train for 10 epochs. Generate 4 instances of each digit as shown above.
-Can we get rid of the annoying learning rate scheduler? Simplicity is the best. Please try to maintain the same performance after removing the exponential learning rate scheduler. Show your visualization after training without the scheduler and provide a description of what you did to compensate for the loss of the scheduler.
+Finally, I combined class conditioning with classifier-free guidance to improve both fidelity and controllability during generation. I sampled images by specifying a target digit class and applying classifier-free guidance during iterative denoising, generating results after 1, 5, and 10 epochs (four samples per digit). I also experimented with removing the exponential learning-rate scheduler and compensated through alternative optimization choices, comparing the resulting visual quality to the scheduled baseline.
+
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/g1.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/g2.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        {% include figure.liquid path="assets/img/cs180/p5/part2/g3.png" title="c750c" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
