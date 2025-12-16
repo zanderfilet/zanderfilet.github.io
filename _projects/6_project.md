@@ -19,6 +19,7 @@ In this project, I implemented generative models for image synthesis and denoisi
 ##### Part 0: Setup
 
 To start out, I tested some prompt embeddings on the pretrained DeepFloyd model. The following text prompts were used to generate text embeddings:
+
 - a high quality picture
 - an oil painting of a snowy mountain village
 - a photo of the amalfi coast
@@ -130,7 +131,7 @@ $$
 
 where $\bar{\alpha}_t$ is the cumulative product of the noise schedule up to timestep $t$. As $t$ increases, $\bar{\alpha}_t \to 0$, and $x_t$ becomes dominated by Gaussian noise.
 
-You can see my code for my implementation of the ```forward(im, t)````. 
+You can see my code for my implementation of the ```forward(im, t)```. 
 
 Here is the Berkeley campanile at noise level [250, 500, 750].
 
@@ -145,7 +146,7 @@ Here is the Berkeley campanile at noise level [250, 500, 750].
         {% include figure.liquid path="assets/img/cs180/p5/part1/c2.png" title="c750d" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">$t=750$</p>
+<p class="text-center">$t=250, t=500, t=750$</p>
 
 ##### 1.2: Classical Denoising
 
@@ -159,7 +160,7 @@ To evaluate how difficult diffusion denoising is, I first applied a classical Ga
         {% include figure.liquid path="assets/img/cs180/p5/part1/a2.png" title="c250d" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
-<p class="text-center">\(t=250)</p>
+<p class="text-center">$t=250$</p>
 
 <div class="row">
     <div class="col-sm">
@@ -182,12 +183,6 @@ To evaluate how difficult diffusion denoising is, I first applied a classical Ga
 <p class="text-center">$t=750$</p>
 
 ##### 1.3: One-Step Denoising
-
-For the 3 noisy images from 1.2 (t = [250, 500, 750]):
-Use your forward function to add noise to your Campanile.
-Estimate the noise in the new noisy image, by passing it through stage_1.unet
-Remove the noise from the noisy image to obtain an estimate of the original image.
-Visualize the original image, the noisy image, and the estimate of the original image
 
 In this step, I used `stage_1.unet`, a pretrained, timestep-conditioned UNet, to estimate the Gaussian noise present in a noisy image. Given a noisy image $x_t$, the timestep $t$, and a text prompt embedding, the UNet predicts the noise $\varepsilon$ that was added during the forward process, which I then appropriately scaled and removed to recover an estimate of the original image $x_0$.
 
@@ -436,9 +431,6 @@ Here are some samples from my personal photo library.
 
 If SDEdit can project real photos back onto the image manifold, it should be even more effective when starting from inputs that lie far off that manifold. This same projection effect is even more dramatic for sketches or non-photorealistic web images. Starting from a drawing or stylized input, adding noise and denoising encourages the model to replace ambiguous strokes with fitting textures, lighting, and geometry, effectively “lifting” the input onto the natural image manifold. As `i_start` increases, the output becomes less faithful to the original lines and more like a realistic reinterpretation.
 
-1 image from the web of your choice, edited using the above method for noise levels [1, 3, 5, 7, 10, 20] (and whatever additional noise levels you want)
-2 hand drawn images, edited using the above method for noise levels [1, 3, 5, 7, 10, 20] (and whatever additional noise levels you want)
-
 I decided to demonstrate this approach with an image downloaded from the web.
 
 <div class="row">
@@ -528,11 +520,6 @@ The same can be done for hand-drawn images. Here are two examples.
 
 Inpainting uses the denoising loop while constraining part of the image to remain fixed. At every timestep, after producing a new sample, we overwrite the pixels outside the masked region with the original image content (with the correct noise level for that timestep), while leaving the masked region free to evolve. This forces the model to generate new content only inside the hole, while maintaining consistency with the unmasked context.
 
-A properly implemented inpaint function
-The Campanile inpainted (feel free to use your own mask)
-2 of your own images edited (come up with your own mask)
-look at the results from this paper for inspiration
-
 Below is the campanile inpainted with a different upper floor.
 
 <div class="row">
@@ -578,7 +565,7 @@ Below is the campanile inpainted with a different upper floor.
 
 Text-conditional image-to-image translation is SDEdit plus language guidance. We start from a noised version of the input image, then denoise with CFG using a chosen prompt so the projection is biased toward satisfying the text. As `i_start` increases, the prompt influence becomes stronger because more of the final image must be hallucinated, producing outputs that both resemble the original image and increasingly reflect the text condition.
 
-Here are three examples of the campanile and two of my own test images with the prompt 'long-stemmed flowers strewn on the hood of a classic Porsche' applied.
+Here are three examples of the campanile and two of my own test images with the prompt 'long-stemmed flowers strewn on the hood of a classic porsche' applied.
 
 <div class="row">
     <div class="col-sm">
@@ -664,7 +651,7 @@ Here are three examples of the campanile and two of my own test images with the 
 ##### 1.8: Visual Anagrams
 
 Once CFG-based sampling is stable, we can couple two different prompts by enforcing a symmetry constraint during denoising to create flip-dependent optical illusions.  
-At each timestep \(t\), we predict noise in two “views” of the same latent: we run the UNet with prompt \(p_1\) on \(x_t\) to get \(\varepsilon_1\), and we run the UNet with prompt \(p_2\) on the flipped image \(f(x_t)\) to get \(\varepsilon_2\). We then flip \(\varepsilon_2\) back and average the two noise estimates to form a single composite \(\varepsilon\), and use that \(\varepsilon\) in the reverse diffusion update; this forces the sample to satisfy \(p_1\) in the upright orientation and \(p_2\) when flipped.
+At each timestep $t$, we predict noise in two "views" of the same latent: we run the UNet with prompt $p_1$ on $x_t$ to get $\varepsilon_1$, and we run the UNet with prompt $p_2$ on the flipped image $f(x_t)$ to get $\varepsilon_2$. We then flip $\varepsilon_2$ back and average the two noise estimates to form a single composite $\varepsilon$, and use that $\varepsilon$ in the reverse diffusion update; this forces the sample to satisfy $p_1$ in the upright orientation and $p_2$ when flipped.
 
 You can see my corresponding code repository for my implementation of the visual_anagrams function. Below are two interesting illusions I created with this methodology.
 
@@ -691,21 +678,18 @@ You can see my corresponding code repository for my implementation of the visual
 ##### 1.9: Hybrid Images
 
 Instead of coupling prompts by a geometric transform, we can couple them in the frequency domain by assigning one prompt to low frequencies and the other to high frequencies.  
-At each timestep \(t\), I computed two CFG noise estimates from the same \(x_t\):
-\[
+At each timestep $t$, I computed two CFG noise estimates from the same $x_t$:
+$$
 \varepsilon_1 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_1)),\qquad
 \varepsilon_2 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_2)).
-\]
+$$
 We then combine them using the provided factorized rule:
-\[
+$$
 \varepsilon \;=\; f_{\text{lowpass}}(\varepsilon_1)\;+\;f_{\text{highpass}}(\varepsilon_2),
-\]
-where \(f_{\text{lowpass}}\) is a Gaussian blur (e.g., kernel 33, \(\sigma=2\)) and \(f_{\text{highpass}}(x)=x-f_{\text{lowpass}}(x)\). Using this composite \(\varepsilon\) in the denoising step makes the final image read as prompt \(p_1\) at a distance (low-frequency structure) but reveal prompt \(p_2\) up close (high-frequency detail).
+$$
+where $f_{\text{lowpass}}$ is a Gaussian blur (e.g., kernel 33, $\sigma=2$) and $f_{\text{highpass}}(x)=x-f_{\text{lowpass}}(x)$. Using this composite $\varepsilon$ in the denoising step makes the final image read as prompt $p_1$ at a distance (low-frequency structure) but reveal prompt $p_2$ up close (high-frequency detail).
 
 You can see my corresponding code repository for my implementation of the visual_anagrams function. Below are two prompt combinations I created with this methodology.
-
-Correctly implemented make_hybrids function
-2 hybrid images of your choosing (feel free to take inspirations from this page).
 
 <div class="row">
     <div class="col-sm">
@@ -734,7 +718,7 @@ I implemented the denoiser as a UNet composed of downsampling and upsampling blo
 ##### 1.2: Using the UNet to Train a Denoiser
 
 Once the architecture is defined, I trained it as a regression model that maps a noisy input back to a clean target with an L2 objective.  
-I generated training pairs \((x_{\text{noisy}}, x)\) on the fly by sampling a noise level \(\sigma\) and forming \(x_{\text{noisy}} = x + \sigma\varepsilon\) (with normalized \(x\) and \(\varepsilon \sim \mathcal{N}(0, I)\)); the UNet \(f_\theta\) is optimized to minimize \(\|f_\theta(x_{\text{noisy}}) - x\|_2^2\), which encourages accurate pixel-level reconstruction.
+I generated training pairs $(x_{\text{noisy}}, x)$ on the fly by sampling a noise level $\sigma$ and forming $x_{\text{noisy}} = x + \sigma\varepsilon$ (with normalized $x$ and $\varepsilon \sim \mathcal{N}(0, I)$); the UNet $f_\theta$ is optimized to minimize $\|f_\theta(x_{\text{noisy}}) - x\|_2^2$, which encourages accurate pixel-level reconstruction.
 
 Below is a visualization of the noising process.
 
@@ -771,7 +755,7 @@ Below is a visualization of the noising process.
 
 ##### 1.2.1: Training
 
-I trained the denoiser on the MNIST training set for five epochs using shuffled batches. Noise was applied dynamically when each batch was fetched so that the model saw different corruptions of the same images across epochs, improving generalization. I used a UNet with hidden dimension \(D=128\) and optimized it with Adam at a learning rate of \(10^{-4}\), monitoring the training loss and visualizing denoised results on the test set after the first and fifth epochs.
+I trained the denoiser on the MNIST training set for five epochs using shuffled batches. Noise was applied dynamically when each batch was fetched so that the model saw different corruptions of the same images across epochs, improving generalization. I used a UNet with hidden dimension $D=128$ and optimized it with Adam at a learning rate of $10^{-4}$, monitoring the training loss and visualizing denoised results on the test set after the first and fifth epochs.
 
 <div class="row">
     <div class="col-sm">
@@ -925,11 +909,11 @@ A brief description of the patterns observed in the generated outputs and explan
 
 After observing that one-step denoising and pure-noise denoising collapse to averaged prototypes, I needed a model that could explicitly represent how images evolve over multiple denoising steps.  
 
-I modified the UNet to be explicitly conditioned on the scalar timestep \(t\) so the model could learn different behaviors at different noise levels. I implemented FCBlocks (small fully-connected networks built from `nn.Linear`) to embed a normalized \(t \in [0,1]\), then used those embeddings to modulate intermediate decoder activations (e.g., scaling the unflatten and upsampling features) so the network could represent a time-dependent flow field rather than a single fixed denoising function.
+I modified the UNet to be explicitly conditioned on the scalar timestep $t$ so the model could learn different behaviors at different noise levels. I implemented FCBlocks (small fully-connected networks built from `nn.Linear`) to embed a normalized $t \in [0,1]$, then used those embeddings to modulate intermediate decoder activations (e.g., scaling the unflatten and upsampling features) so the network could represent a time-dependent flow field rather than a single fixed denoising function.
 
 ##### 2.2: Training the UNet
 
-With time conditioning in place, training naturally shifted from predicting clean images to predicting how samples should move over time. I trained the time-conditioned UNet to predict the flow from an interpolated noisy sample \(x_t\) back toward the clean image \(x\) at a randomly sampled timestep \(t\). For each batch, I sampled MNIST digits, sampled random \(t\), constructed \(x_t\) on-the-fly, and optimized the UNet with Adam (initial lr \(=10^{-2}\)) to regress the target flow, while using an exponential learning-rate decay scheduler stepped once per epoch. I tracked the training loss across the full run and plotted it as the primary training signal.
+With time conditioning in place, training naturally shifted from predicting clean images to predicting how samples should move over time. I trained the time-conditioned UNet to predict the flow from an interpolated noisy sample $x_t$ back toward the clean image $x$ at a randomly sampled timestep $t$. For each batch, I sampled MNIST digits, sampled random $t$, constructed $x_t$ on-the-fly, and optimized the UNet with Adam (initial lr $=10^{-2}$) to regress the target flow, while using an exponential learning-rate decay scheduler stepped once per epoch. I tracked the training loss across the full run and plotted it as the primary training signal.
 
 <div class="row">
     <div class="col-sm">
@@ -960,7 +944,7 @@ Once the model learned a time-dependent flow field, I could use it to iterativel
 
 ##### 2.4: Adding Class-Conditioning to UNet
 
-While time conditioning enabled generation, it did not provide control over which digit was generated. I extended the UNet to accept a class-conditioning vector \(c\) (a one-hot encoding for digits 0–9) by adding additional FCBlocks and combining class and time embeddings to modulate decoder activations. To retain unconditional generation capability, I applied conditioning dropout by zeroing the class vector 10% of the time, enabling classifier-free guidance during sampling.
+While time conditioning enabled generation, it did not provide control over which digit was generated. I extended the UNet to accept a class-conditioning vector $c$ (a one-hot encoding for digits 0–9) by adding additional FCBlocks and combining class and time embeddings to modulate decoder activations. To retain unconditional generation capability, I applied conditioning dropout by zeroing the class vector 10% of the time, enabling classifier-free guidance during sampling.
 
 ##### 2.5: Training the UNet
 
