@@ -5,7 +5,7 @@ permalink: /projects/
 description: 
 nav: true
 nav_order: 2
-display_categories: [CS180]
+display_categories: [General, CS180]
 horizontal: false
 ---
 
