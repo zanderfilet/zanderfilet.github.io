@@ -1,8 +1,8 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
-subtitle: <a href='mailto:cyprian.zander@berkeley.edu'>email</a> | <a href='https://www.linkedin.com/in/cyprian-zander/'>linkedin</a> | <a href='https://scholar.google.com/citations?user=vro-3nUAAAAJ&hl=en'>scholar</a> | <a href='https://github.com/zanderfilet'>github</a>
+subtitle: <a href='mailto:cyprian.zander@berkeley.edu'>Email</a> | <a href='https://www.linkedin.com/in/cyprian-zander/'>LinkedIn</a> | <a href='https://scholar.google.com/citations?user=vro-3nUAAAAJ&hl=en'>Scholar</a> | <a href='https://github.com/zanderfilet'>GitHub</a>
 
 profile:
   align: right
