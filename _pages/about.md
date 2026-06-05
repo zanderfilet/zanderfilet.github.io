@@ -24,9 +24,8 @@ latest_posts:
   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
+I recently graduated from UC Berkeley with a bachelor's degree in Computer Science. My background spans quantitative trading, interning at Citadel Securities across the Options Market Making and Index Options desks, and computer vision research, including work at MVTec on OCR acceleration and anomaly detection. My interests broadly span computer vision, reinforcement learning, and systematic trading.
 
-I'm a senior studying Computer Science at UC Berkeley with a concentration in statistics. I’ve interned in quantitative trading at Citadel Securities (Options Market Making and Index Options desks) and in computer vision research at MVTec (OCR acceleration and anomaly detection). My interests broadly span systematic trading, algorithmic game theory, and applied ML. 
+In a few weeks, I'll be joining a computer vision research lab as part of the Sutter Hill Ventures Codepoint fellowship.
 
-In my free time, I enjoy card games, photography, hiking, skiing, and tennis.
-
-This site is a work in progress, so expect the occasional rough edge. If you want to chat or have a puzzle/game to share, please email me!
+I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, tennis, and hiking.
