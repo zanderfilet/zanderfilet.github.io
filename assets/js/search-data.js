@@ -404,7 +404,7 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "projects-offline-and-online-rlhf-for-open-ended-instruction-following",
           title: 'Offline and Online RLHF for Open-Ended Instruction Following',
-          description: "Research paper (PDF)",
+          description: "May 15, 2026",
           section: "Projects",handler: () => {
               window.location.href = "/projects/10_project/";
             },},{id: "projects-becoming-friends-with-your-camera",
