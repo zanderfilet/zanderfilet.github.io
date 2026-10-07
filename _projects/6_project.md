@@ -96,6 +96,7 @@ All of these renderings clearly display a Porsche, as indicated by the headlight
 These images also closely adhere to the prompt provided, although only the 100 step example gets the number of people in the ski lift correct. Also notable is that all people were generated with helmets on, but none are correspondingly wearing skis or snowboards.
 
 **Prompt 4: a green tennis court**
+
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p5/part0/4.png" title="t_20" class="img-fluid rounded z-depth-1" %}
