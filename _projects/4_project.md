@@ -33,7 +33,6 @@ I took these three sets of images, trying my best to rotate around the focal poi
 </div>
 <p class="text-center">Campanile set.</p>
 
-
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p3/room_set/r2.JPG" title="1" class="img-fluid rounded z-depth-1" %}
@@ -131,7 +130,7 @@ My $computeH(im1_{pts}, im2_{pts})$ implementation:
 ```
 def computeH(im1_pts, im2_pts):
     n = len(im1_pts)
-    
+
     # linear system of equations for all points (solving for 8 unknowns, H_8 fixed to 1)
     A = np.zeros((2*n, 8))
     b = np.zeros(2*n)
@@ -144,7 +143,7 @@ def computeH(im1_pts, im2_pts):
         A[2*i+1] = [0, 0, 0, x1, y1, 1, -x1*y2, -y1*y2]
         b[2*i+1] = y2
 
-    # solve 
+    # solve
     h, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
     H = np.array([[h[0], h[1], h[2]], [h[3], h[4], h[5]], [h[6], h[7], 1.0]])
     return H
@@ -192,6 +191,7 @@ $$
 $$
 
 The recovered homography matrix is:
+
 $$
 H = \begin{bmatrix}
 1.5833 & -0.0352 & -557.6588 \\
@@ -316,7 +316,7 @@ In the second part of this project I implemented an automatic image stitching co
 
 ##### B.1 Harris Corner Detection
 
-Harris corner detection identifies interest points by analyzing local image gradients. The algorithm computes image derivatives ($I_x$,  $I_y$), then constructs the matrix:
+Harris corner detection identifies interest points by analyzing local image gradients. The algorithm computes image derivatives ($I_x$, $I_y$), then constructs the matrix:
 
 $$M = \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}$$
 
@@ -427,7 +427,7 @@ Below are some comparisons between my manually generated mosaics and the automat
 
 The automatic stitching sometimes produces lower quality results compared to manual stitching since automatic feature detection may miss optimal correspondence points that humans would naturally select. Also, the limited number of detected features can lead to less robust homography estimation, and the RANSAC algorithm's random sampling may not always find the globally optimal solution within the iteration limit.
 
-Here are some more new images using the feature matching and autostitching approach I implemented. 
+Here are some more new images using the feature matching and autostitching approach I implemented.
 
 <div class="row">
     <div class="col-sm">

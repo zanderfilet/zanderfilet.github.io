@@ -24,6 +24,7 @@ latest_posts:
   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
+
 I recently graduated from UC Berkeley with a bachelor's degree in Computer Science. My background spans quantitative trading, interning at Citadel Securities across the Options Market Making and Index Options desks, and computer vision research, including work at MVTec on OCR acceleration and anomaly detection. My interests broadly span computer vision, reinforcement learning, and systematic trading.
 
 In a few weeks, I'll be joining a computer vision research lab as part of the Sutter Hill Ventures Codepoint fellowship.

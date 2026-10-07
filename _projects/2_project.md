@@ -10,7 +10,7 @@ img: assets/img/cs180/p1/emir_pyramid_NCC_level4_eq_cropped.jpg
 
 ### Overview
 
-The goal of this project is to automatically reconstruct color photographs from the filtered glass plate negatives of Sergei Mikhailovich Prokudin-Gorskii, an early 20th century photographer. Each negative contains three separate exposures of images taken through blue, green, and red filters (from top to bottom). Since I need to stitch these components together, the primary challenge of this project is calculating how each exposure is displaced to correctly align each color filter. Later, I extend on this algorithm with some optimizations, color correction, and cropping in postprocessing. 
+The goal of this project is to automatically reconstruct color photographs from the filtered glass plate negatives of Sergei Mikhailovich Prokudin-Gorskii, an early 20th century photographer. Each negative contains three separate exposures of images taken through blue, green, and red filters (from top to bottom). Since I need to stitch these components together, the primary challenge of this project is calculating how each exposure is displaced to correctly align each color filter. Later, I extend on this algorithm with some optimizations, color correction, and cropping in postprocessing.
 
 ---
 
@@ -56,7 +56,7 @@ My second approach focusses on maximizing normalized cross-correlation (NCC), wh
 ##### L2 Norm
 
 $$
-E(\Delta x, \Delta y) = 
+E(\Delta x, \Delta y) =
 \sum_{x,y} \Big( R(x,y) - F(x+\Delta x, y+\Delta y) \Big)^2
 $$
 
@@ -65,7 +65,7 @@ We minimize $E(\Delta x, \Delta y)$ to find the displacement $(\Delta x, \Delta 
 ##### Normalized Cross-Correlation (NCC)
 
 $$
-\text{NCC}(\Delta x, \Delta y) = 
+\text{NCC}(\Delta x, \Delta y) =
 \frac{\sum_{x,y} \big(R(x,y) - \bar{R}\big)\big(F(x+\Delta x, y+\Delta y) - \bar{F}\big)}
      {\sqrt{\sum_{x,y} \big(R(x,y) - \bar{R}\big)^2} \,
       \sqrt{\sum_{x,y} \big(F(x+\Delta x, y+\Delta y) - \bar{F}\big)^2}}
@@ -73,10 +73,10 @@ $$
 
 We maximize $\text{NCC}(\Delta x, \Delta y)$ to find the displacement that yields the strongest correlation between $R$ and $F$, regardless of brightness or contrast differences.
 
-- **$R(x,y)$:** Reference filter/channel (kept fixed, e.g. green).  
-- **$F(x+\Delta x, y+\Delta y)$:** Filter/channel being aligned (shifted version of red or blue).  
-- **$(\Delta x, \Delta y)$:** Displacement vector we are solving for.  
-- **$\bar{R}, \bar{F}$:** Mean pixel intensities of $R$ and $F$, used for normalization in NCC.  
+- **$R(x,y)$:** Reference filter/channel (kept fixed, e.g. green).
+- **$F(x+\Delta x, y+\Delta y)$:** Filter/channel being aligned (shifted version of red or blue).
+- **$(\Delta x, \Delta y)$:** Displacement vector we are solving for.
+- **$\bar{R}, \bar{F}$:** Mean pixel intensities of $R$ and $F$, used for normalization in NCC.
 
 ---
 
@@ -132,10 +132,10 @@ Here are some first outputs I achieved with these two approaches.
 Below are the filter displacements found by both approaches.
 
 | Image Name | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
-|------------|---------------------|----------------------|-------------------|---------------------|----------------------|-------------------|
-| monastery | (3, -2) | (0, 0) | (6, 1) | (3, -2) | (0, 0) | (6, 1) |
-| tobolsk | (-3, -3) | (0, 0) | (4, 1) | (-3, -3) | (0, 0) | (4, 1) |
-| cathedral | (-5, -2) | (0, 0) | (7, 1) | (-5, -2) | (0, 0) | (7, 1) |
+| ---------- | -------------------- | --------------------- | ------------------- | --------------------- | ---------------------- | -------------------- |
+| monastery  | (3, -2)              | (0, 0)                | (6, 1)              | (3, -2)               | (0, 0)                 | (6, 1)               |
+| tobolsk    | (-3, -3)             | (0, 0)                | (4, 1)              | (-3, -3)              | (0, 0)                 | (4, 1)               |
+| cathedral  | (-5, -2)             | (0, 0)                | (7, 1)              | (-5, -2)              | (0, 0)                 | (7, 1)               |
 
 ---
 
@@ -326,30 +326,32 @@ The process begins by applying a Gaussian blur with $\sigma = 1$ to the image. T
 
 Below are the filter displacements found by both approaches.
 
-| Image Name | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
-|------------|---------------------|----------------------|-------------------|---------------------|----------------------|-------------------|
-| emir | (-49, -24) | (0, 0) | (57, 17) | (-49, -24) | (0, 0) | (57, 17) |
-| italil | (-38, -21) | (0, 0) | (39, 15) | (-38, -21) | (0, 0) | (39, 15) |
-| church | (-25, -4) | (0, 0) | (33, -8) | (-25, -4) | (0, 0) | (33, -8) |
-| three_generations | (-53, -14) | (0, 0) | (59, -3) | (-53, -14) | (0, 0) | (59, -3) |
-| lugano | (-41, 16) | (0, 0) | (53, -13) | (-41, 16) | (0, 0) | (52, -13) |
-| melons | (-82, -11) | (0, 0) | (96, 3) | (-82, -11) | (0, 0) | (96, 3) |
-| lastochikino | (3, 2) | (0, 0) | (78, -7) | (3, 2) | (0, 0) | (78, -7) |
-| icon | (-41, -17) | (0, 0) | (48, 5) | (-41, -17) | (0, 0) | (48, 5) |
-| siren | (-50, 6) | (0, 0) | (47, -19) | (-49, 6) | (0, 0) | (47, -19) |
-| self_portrait | (-79, -29) | (0, 0) | (98, 8) | (-79, -29) | (0, 0) | (98, 8) |
-| harvesters | (-59, -17) | (0, 0) | (65, -3) | (-59, -17) | (0, 0) | (65, -3) |
+| Image Name        | L2 Blue Displacement | L2 Green Displacement | L2 Red Displacement | NCC Blue Displacement | NCC Green Displacement | NCC Red Displacement |
+| ----------------- | -------------------- | --------------------- | ------------------- | --------------------- | ---------------------- | -------------------- |
+| emir              | (-49, -24)           | (0, 0)                | (57, 17)            | (-49, -24)            | (0, 0)                 | (57, 17)             |
+| italil            | (-38, -21)           | (0, 0)                | (39, 15)            | (-38, -21)            | (0, 0)                 | (39, 15)             |
+| church            | (-25, -4)            | (0, 0)                | (33, -8)            | (-25, -4)             | (0, 0)                 | (33, -8)             |
+| three_generations | (-53, -14)           | (0, 0)                | (59, -3)            | (-53, -14)            | (0, 0)                 | (59, -3)             |
+| lugano            | (-41, 16)            | (0, 0)                | (53, -13)           | (-41, 16)             | (0, 0)                 | (52, -13)            |
+| melons            | (-82, -11)           | (0, 0)                | (96, 3)             | (-82, -11)            | (0, 0)                 | (96, 3)              |
+| lastochikino      | (3, 2)               | (0, 0)                | (78, -7)            | (3, 2)                | (0, 0)                 | (78, -7)             |
+| icon              | (-41, -17)           | (0, 0)                | (48, 5)             | (-41, -17)            | (0, 0)                 | (48, 5)              |
+| siren             | (-50, 6)             | (0, 0)                | (47, -19)           | (-49, 6)              | (0, 0)                 | (47, -19)            |
+| self_portrait     | (-79, -29)           | (0, 0)                | (98, 8)             | (-79, -29)            | (0, 0)                 | (98, 8)              |
+| harvesters        | (-59, -17)           | (0, 0)                | (65, -3)            | (-59, -17)            | (0, 0)                 | (65, -3)             |
 
 ---
 
 ### Bells & Whistles
 
 ##### Automatic Contrast
+
 From these results, I wanted to extend on the project, by improving the contrast in an image by spreading out the most frequent intensity values. I achieved this by equalizing the histograms of all three color filters, making the distribution of pixel intensities more uniform.
 
 Histogram equalization works by transforming the pixel intensities based on their own distribution. First, a histogram of the image's pixel intensities is computed, which is used to calculate the CDF (the cumulative sum of pixel counts up to each intensity level). The CDF is normalized, creating a transfer function that maps the original intensity values to a new range. Each pixel's intensity in the original image is then replaced by its corresponding value from the normalized CDF. This remapping effectively spreads out the most frequent intensity values, stretching the distribution across the full dynamic range.
 
 ##### Automatic Cropping
+
 To eliminate the discolored border artifacts created by the channel alignment process, I apply an automatic cropping procedure to the final colorized image. This method simply removes a 5% margin from all edges of the image, resulting in a cleaner final output.
 
 ---

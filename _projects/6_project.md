@@ -44,7 +44,7 @@ I used a random seed (101) and upsampled the images from 64x64 to 256x256 using 
 
 ###### Sampling Results
 
-__Prompt 1: a lithograph of waterfalls__
+**Prompt 1: a lithograph of waterfalls**
 
 <div class="row">
     <div class="col-sm">
@@ -61,8 +61,7 @@ __Prompt 1: a lithograph of waterfalls__
 
 Across all of these images, the waterfalls are clearly recognizable, although adherence to the lithographic style is rather somewhat limited. Despite none of these samples reminding of true lithographies, the samples with higher step counts do seem to approach the idea of a drawing a more closely than the 20 step count image, which reminds more of an animated picture.
 
-
-__Prompt 2: long-stemmed flowers strewn on the hood of a classic Porsche__
+**Prompt 2: long-stemmed flowers strewn on the hood of a classic Porsche**
 
 <div class="row">
     <div class="col-sm">
@@ -79,7 +78,7 @@ __Prompt 2: long-stemmed flowers strewn on the hood of a classic Porsche__
 
 All of these renderings clearly display a Porsche, as indicated by the headlights and logo. However, the second iteration seemed to fail with the task of placing the flowers on the hood of the car and instead generated a flowery hedge behind the car. It seems that the 100 iteration image best adheres to the prompt, since it also incorporates the detail that the flowers are supposed to be long-stemmed. Curiously, all samples imagined a pale green vehicle, potentially hinting at some bias in the dataset regarding the green surroundings flowers are typically found in.
 
-__Prompt 3: a family of four sitting in a ski lift__
+**Prompt 3: a family of four sitting in a ski lift**
 
 <div class="row">
     <div class="col-sm">
@@ -96,7 +95,7 @@ __Prompt 3: a family of four sitting in a ski lift__
 
 These images also closely adhere to the prompt provided, although only the 100 step example gets the number of people in the ski lift correct. Also notable is that all people were generated with helmets on, but none are correspondingly wearing skis or snowboards.
 
-__Prompt 4: a green tennis court__
+**Prompt 4: a green tennis court**
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p5/part0/4.png" title="t_20" class="img-fluid rounded z-depth-1" %}
@@ -131,7 +130,7 @@ $$
 
 where $\bar{\alpha}_t$ is the cumulative product of the noise schedule up to timestep $t$. As $t$ increases, $\bar{\alpha}_t \to 0$, and $x_t$ becomes dominated by Gaussian noise.
 
-You can see my code for my implementation of the ```forward(im, t)```. 
+You can see my code for my implementation of the `forward(im, t)`.
 
 Here is the Berkeley campanile at noise level [250, 500, 750].
 
@@ -317,7 +316,6 @@ $$
 
 where $\gamma$ controls guidance strength. When $\gamma > 1$, the update amplifies the direction that moves the sample toward satisfying the text condition, producing more coherent images at the cost of reduced diversity. This guided $\varepsilon$ is then used in the same iterative denoising update as before.
 
-
 <div class="row">
     <div class="col-sm">
         {% include figure.liquid path="assets/img/cs180/p5/part1/g1.png" title="c750" class="img-fluid rounded z-depth-1" %}
@@ -397,7 +395,6 @@ Here are some samples from my personal photo library.
     </div>
 </div>
 <p class="text-center">From left to right: Original, $i_{start}=1 (t=960)$, $i_{start}=3 (t=900)$, $i_{start}=5 (t=840)$, $i_{start}=7 (t=780)$, $i_{start}=10 (t=690)$, $i_{start}=20 (t=390)$</p>
-
 
 <div class="row">
     <div class="col-sm">
@@ -679,14 +676,18 @@ You can see my corresponding code repository for my implementation of the visual
 
 Instead of coupling prompts by a geometric transform, we can couple them in the frequency domain by assigning one prompt to low frequencies and the other to high frequencies.  
 At each timestep $t$, I computed two CFG noise estimates from the same $x_t$:
+
 $$
 \varepsilon_1 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_1)),\qquad
 \varepsilon_2 = \mathrm{CFG}(\mathrm{UNet}(x_t, t, p_2)).
 $$
+
 We then combine them using the provided factorized rule:
+
 $$
 \varepsilon \;=\; f_{\text{lowpass}}(\varepsilon_1)\;+\;f_{\text{highpass}}(\varepsilon_2),
 $$
+
 where $f_{\text{lowpass}}$ is a Gaussian blur (e.g., kernel 33, $\sigma=2$) and $f_{\text{highpass}}(x)=x-f_{\text{lowpass}}(x)$. Using this composite $\varepsilon$ in the denoising step makes the final image read as prompt $p_1$ at a distance (low-frequency structure) but reveal prompt $p_2$ up close (high-frequency detail).
 
 You can see my corresponding code repository for my implementation of the visual_anagrams function. Below are two prompt combinations I created with this methodology.
@@ -707,7 +708,7 @@ You can see my corresponding code repository for my implementation of the visual
 
 ### Part B: Flow Matching from Scratch
 
-Before implementing and training the UNet, the goal is to rely on primary references for the core building blocks (convolutions, transposed convolutions, pooling, datasets, dataloaders, and training loops) so the architecture and optimization behavior are understood. 
+Before implementing and training the UNet, the goal is to rely on primary references for the core building blocks (convolutions, transposed convolutions, pooling, datasets, dataloaders, and training loops) so the architecture and optimization behavior are understood.
 
 ##### Part 1: Training a Single-Step Denoising UNet
 
@@ -751,7 +752,6 @@ Below is a visualization of the noising process.
     </div>
 </div>
 <p class="text-center">From left to right: $\sigma \in \{0.0,\; 0.2,\; 0.4,\; 0.5,\; 0.6,\; 0.8,\; 1.0\}$</p>
-
 
 ##### 1.2.1: Training
 
@@ -899,15 +899,13 @@ To explore denoising as a generative process, I trained the UNet to map pure Gau
 </div>
 <p class="text-center">Samples after fifth epoch</p>
 
-
 A brief description of the patterns observed in the generated outputs and explanations for why they may exist.
 
 ##### Part 2: Training a Flow Matching Model
 
-
 ##### 2.1: Adding Time Conditioning to UNet
 
-After observing that one-step denoising and pure-noise denoising collapse to averaged prototypes, I needed a model that could explicitly represent how images evolve over multiple denoising steps.  
+After observing that one-step denoising and pure-noise denoising collapse to averaged prototypes, I needed a model that could explicitly represent how images evolve over multiple denoising steps.
 
 I modified the UNet to be explicitly conditioned on the scalar timestep $t$ so the model could learn different behaviors at different noise levels. I implemented FCBlocks (small fully-connected networks built from `nn.Linear`) to embed a normalized $t \in [0,1]$, then used those embeddings to modulate intermediate decoder activations (e.g., scaling the unflatten and upsampling features) so the network could represent a time-dependent flow field rather than a single fixed denoising function.
 

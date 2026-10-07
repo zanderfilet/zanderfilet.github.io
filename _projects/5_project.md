@@ -70,7 +70,6 @@ For each image containing the ArUco marker, I solved the Perspective-n-Point (Pn
 
 In the final step of the data preparation process, I removed the lens distortion from each image to make sure they match the pinhole camera model that NeRF assumes. To eliminate black borders from undistortion, I computed an undistored camera matrix, cropped the images to the valid ROI, and adjusted the principal point coordinates to account for the crop offset. Finally, I split the undistorted images and their c2w poses into training, validation, and test sets.
 
-
 ### Part 1: Fit a Neural Field to a 2D Image
 
 Before working with 3D Neural Radiance Fields, I first implemented a 2D neural field. For this, I built an MLP that takes normalized 2D pixel coordinates as input and outputs RGB color values. To capture high-frequency details, I applied sinusoidal positional encoding to the input coordinates, expanding them from 2D to higher dimensions: $\gamma(p) = [p, \sin(2^0\pi p), \cos(2^0\pi p), \ldots, \sin(2^{L-1}\pi p), \cos(2^{L-1}\pi p)]$ where $L$ is the maximum frequency level. The network was trained using MSE loss between predicted and ground truth colors, optimized with Adam and evaluated using the Peak Signal to Noise Ratio (PSNR).
@@ -188,7 +187,7 @@ Below is the viser visualization for an initial Lego wheel loader dataset.
 
 ##### 2.4: Neural Radiance Field
 
-With the data preparation ready, I implemented the NeRF MLP to predict RGB color and volume density for 3D points. As an extension to the 2D neural field, this network takes both the 3D world coordinates and viewing directions as inputs, since color in a radiance field intuitively depends on view angle. I applied positional encoding to both inputs, using higher frequency for positions ($L=10$) to capture fine geometric details and a lower frequency for directions ($L=4$), which ensured that viewing-dependent effects would be smoother. 
+With the data preparation ready, I implemented the NeRF MLP to predict RGB color and volume density for 3D points. As an extension to the 2D neural field, this network takes both the 3D world coordinates and viewing directions as inputs, since color in a radiance field intuitively depends on view angle. I applied positional encoding to both inputs, using higher frequency for positions ($L=10$) to capture fine geometric details and a lower frequency for directions ($L=4$), which ensured that viewing-dependent effects would be smoother.
 
 In this extended model, the architecture consists of eight fully connected layers with ReLU activations. After the first 4 layers, I concatenated the original positionally-encoded coordinates back into the network as a skip connection, which helps retain spatial information. The network then splits into two components. First, there's a density head that outputs a single positive value (using ReLU), and a color head that takes the intermediate features concatenated with the encoded viewing direction to produce RGB values (with Sigmoid activations to bound outputs to [0,1]).
 

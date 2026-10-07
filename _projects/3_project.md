@@ -31,7 +31,7 @@ def convolve2d_np_four(i, k):
     kh, kw = k.shape
 
     i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
-    
+
     k_flip = np.flip(k)
 
     out = np.zeros((h, w))
@@ -48,7 +48,7 @@ def convolve2d_np_two(i, k):
     kh, kw = k.shape
 
     i_pad = np.pad(i, ((kh // 2, kh // 2), (kw // 2, kw // 2)), mode='constant', constant_values=0)
-    
+
     k_flip = np.flip(k)
 
     out = np.zeros((h, w))
@@ -62,10 +62,9 @@ def convolve2d_np_two(i, k):
 
 For clarity, padding is applied to the image to ensure that the convolution operation can be performed at the edges. Adding a border of zeros around the image allows the algorithm to apply the convolution at every pixel in the image. Flipping the kernel is necessary to perform convolution, rather than cross-correlation.
 
-
 ##### Filters
 
-Below are three sample kernels I used to convolve some images. 
+Below are three sample kernels I used to convolve some images.
 
 <div class="row">
     <div class="col-sm">
@@ -117,7 +116,6 @@ Below are three sample kernels I used to convolve some images.
     </div>
 </div>
 <p class="text-center">From left to right, the original, $D_x$ applied to it, then $D_y$, then the box filter.</p>
-
 
 ##### Efficiency and Accuracy of Convolution Implementations
 
@@ -576,7 +574,6 @@ In short, we simply needed to add all layers of the stack together for the final
 
 Here are some more fun examples I developed.
 
-
 ##### Beach with mountains on the horizon
 
 <div class="row">
@@ -594,7 +591,6 @@ Here are some more fun examples I developed.
 Interesting about this photo is how the coarse blend of the mountains looks like a shadow of the mountains on the water.
 
 ##### Electric bubble
-
 
 <div class="row">
     <div class="col-sm">{% include figure.liquid path="assets/img/cs180/p2/22/blend_sparks_bubbles_Circular_Blend/sparks.png" title="sparks" class="img-fluid rounded z-depth-1" %}</div>
