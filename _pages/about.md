@@ -29,4 +29,4 @@ I recently graduated from UC Berkeley with a bachelor's degree in Computer Scien
 
 In a few weeks, I'll be joining a computer vision research lab as part of the Sutter Hill Ventures Codepoint fellowship.
 
-I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, tennis, and hiking.
+I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, tennis, and hiking. Back in high school, I also made a couple of silly games, [Guess the Hex](https://guessthehex.com/) and [Swing Ninja](https://swingninja.app/) -- will I see you on the leaderboard? ;)
