@@ -25,8 +25,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I recently graduated from UC Berkeley with a bachelor's degree in Computer Science. My background spans quantitative trading, interning at Citadel Securities across the Options Market Making and Index Options desks, and computer vision research, including work at MVTec on OCR acceleration and anomaly detection. My interests broadly span computer vision, reinforcement learning, and systematic trading.
+I recently graduated from UC Berkeley with a bachelor's degree in Computer Science. I've interned in quantitative trading at Citadel Securities, on the Options Market Making and Index Options desks. I've also done computer vision research, working on OCR acceleration and anomaly detection at MVTec and, earlier, in Prof. Ying Ding's lab at UT Austin.
 
-In a few weeks, I'll be joining a computer vision research lab as part of the Sutter Hill Ventures Codepoint fellowship.
+I'm now at Reve, an AI lab building image generation models, through the Sutter Hill Ventures fellowship program.
 
-I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, tennis, and hiking. Back in high school, I also made a couple of silly games, [Guess the Hex](https://guessthehex.com/) and [Swing Ninja](https://swingninja.app/) -- will I see you on the leaderboard? ;)
+I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, and tennis. Back in high school, I also made a couple of silly games, [Guess the Hex](https://guessthehex.com/) and [Swing Ninja](https://swingninja.app/) -- will I see you on the leaderboard? ;)
