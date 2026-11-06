@@ -4,13 +4,6 @@ title: About
 permalink: /
 subtitle: <a href='mailto:cyprian.zander@berkeley.edu'>Email</a> | <a href='https://www.linkedin.com/in/cyprian-zander/'>LinkedIn</a> | <a href='https://scholar.google.com/citations?user=vro-3nUAAAAJ&hl=en'>Scholar</a> | <a href='https://github.com/zanderfilet'>GitHub</a>
 
-profile:
-  align: right
-  image: prof_pic.png
-  image_circular: false # crops the image to make it circular
-  more_info: >
-    <p></p>
-
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 
@@ -29,4 +22,4 @@ I recently graduated from UC Berkeley with a bachelor's degree in Computer Scien
 
 I'm now at Reve, an AI lab building image generation models, through the Sutter Hill Ventures fellowship program.
 
-I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, and tennis. Back in high school, I also made a couple of silly games, [Guess the Hex](https://guessthehex.com/) and [Swing Ninja](https://swingninja.app/) -- will I see you on the leaderboard? ;)
+I'm originally from Munich, and outside of work I enjoy card games, photography, skiing, and tennis. Back in high school, I also made a couple of silly games, [Guess the Hex](https://guessthehex.com/) and [Swing Ninja](https://swingninja.app/) -- will I see you on the leaderboard?
